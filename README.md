@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LcdPlacas
 
-## Getting Started
+Online catalog for a TV-repair-parts business (placas main, fuentes, T-Con, tiras de LED,
+componentes). Spanish (`es-AR`), ARS pricing. **Buying happens over WhatsApp** — the site's
+job is to help people find the exact part for their TV, then contact via WhatsApp.
 
-First, run the development server:
+Built with **Next.js 16** (App Router) + **React 19** + **Tailwind CSS v4**. Data lives in
+**Supabase**, search runs on **Algolia**, analytics on **PostHog** (cookieless).
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # production build (fully static)
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The site builds with **no environment variables** (it reads a committed data snapshot and
+uses a public Algolia search key). Env vars are only for analytics and the data pipeline —
+see below.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## How the data works
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Supabase is the source of truth. The site is fully static**, built from a committed
+snapshot at `data/products.json`. Algolia holds a copy of the data for search.
 
-## Learn More
+```
+Supabase  ──scripts/db-pull.sh──▶  data/products.json  ──build──▶  static site
+   └────────────────────────────  scripts/push-algolia.py  ──▶  Algolia (search)
+```
 
-To learn more about Next.js, take a look at the following resources:
+**To update products:** edit them in the Supabase dashboard, then:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+# .env.local must contain SUPABASE_DB_URL, ALGOLIA_APP_ID, ALGOLIA_WRITE_KEY
+./scripts/db-pull.sh                 # Supabase → data/products.json
+python3 scripts/push-algolia.py      # → Algolia index
+git commit -am "update products" && git push   # redeploy
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Full details in [`scripts/README.md`](scripts/README.md).
 
-## Deploy on Vercel
+## Environment variables
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Runtime (Vercel) — **optional**, only for analytics:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Variable | Purpose |
+| --- | --- |
+| `NEXT_PUBLIC_POSTHOG_KEY` | PostHog project key (`phc_…`) |
+| `NEXT_PUBLIC_POSTHOG_HOST` | `https://us.i.posthog.com` or `https://eu.i.posthog.com` |
+
+Local pipeline only (`.env.local`, git-ignored): `SUPABASE_DB_URL`, `ALGOLIA_APP_ID`,
+`ALGOLIA_WRITE_KEY`.
+
+## Deploy
+
+Deploys to **Vercel** as a static Next.js app. Add the two PostHog vars if you want
+analytics; everything else works without configuration. Product photos are served from the
+store's CDN (configured in `next.config.ts`).
+
+## Project docs
+
+- [`CLAUDE.md`](CLAUDE.md) — architecture + conventions + scope constraints.
+- [`TODO.md`](TODO.md) — roadmap (owner tasks + planned work).
+- [`docs/`](docs/) — original planning (site structure, design system).
