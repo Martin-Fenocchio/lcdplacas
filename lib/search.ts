@@ -61,6 +61,8 @@ export interface CatalogState {
   condition: string[];
   priceMin: number | null;
   priceMax: number | null;
+  /** Locks results to one category (used by the category landing pages). */
+  categorySlug?: string | null;
 }
 
 export type FacetCounts = Record<string, number>;
@@ -94,8 +96,11 @@ export async function searchCatalog(state: CatalogState): Promise<CatalogResult>
   if (state.priceMin != null) numericFilters.push(`price>=${state.priceMin}`);
   if (state.priceMax != null) numericFilters.push(`price<=${state.priceMax}`);
 
+  // Category scope is always applied (never excluded from facet counts).
+  const scope: string[][] = state.categorySlug ? [[`categorySlug:${state.categorySlug}`]] : [];
+
   const facetFilters = (exclude: FacetAttr | null) => {
-    const groups: string[][] = [];
+    const groups: string[][] = [...scope];
     for (const attr of FACET_ATTRS) {
       if (attr === exclude) continue;
       if (selected[attr].length) groups.push(selected[attr].map((v) => `${attr}:${v}`));

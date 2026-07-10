@@ -29,7 +29,7 @@ export function CategoryGrid() {
           {CATEGORIES.map((cat, i) => (
             <Reveal key={cat.slug} delay={0.02 + i * 0.05} className={ITEM}>
               <Link
-                href="/productos"
+                href={`/productos/${cat.slug}`}
                 className="flex h-full flex-col gap-3.5 rounded-2xl border border-white/10 bg-white/[0.04] p-[22px] transition-[translate,box-shadow,border-color,background-color] duration-300 ease-out hover:-translate-y-1 hover:border-sky/60 hover:bg-white/[0.07] hover:shadow-[0_16px_34px_-20px_rgba(37,99,235,0.7)]"
               >
                 <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/20 text-sky">

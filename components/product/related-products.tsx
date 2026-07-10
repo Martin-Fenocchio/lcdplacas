@@ -15,7 +15,10 @@ export function RelatedProducts({ product }: { product: ProductDetail }) {
             <h2 className="text-[26px] font-semibold">Repuestos relacionados</h2>
             <p className="mt-1.5 text-[15px] text-muted">Más repuestos de la categoría {product.category}.</p>
           </div>
-          <Link href="/productos" className="inline-flex items-center gap-1.5 text-sm font-semibold">
+          <Link
+            href={`/productos/${product.categorySlug}`}
+            className="inline-flex items-center gap-1.5 text-sm font-semibold"
+          >
             Ver todos
             <ArrowRight className="h-4 w-4" />
           </Link>

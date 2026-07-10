@@ -25,7 +25,16 @@ const SORTS: { value: SortOption; label: string }[] = [
 
 const FACET_LABEL: Record<FacetAttr, string> = { brand: "Marca", type: "Tipo", condition: "Estado" };
 
-export function CatalogBrowser({ total, children }: { total: number; children: React.ReactNode }) {
+export function CatalogBrowser({
+  total,
+  category,
+  children,
+}: {
+  total: number;
+  /** When set, results are locked to this category (category landing pages). */
+  category?: { slug: string; name: string };
+  children: React.ReactNode;
+}) {
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<SortOption>("relevance");
   const [brand, setBrand] = useState<string[]>([]);
@@ -61,11 +70,12 @@ export function CatalogBrowser({ total, children }: { total: number; children: R
         condition,
         priceMin: priceMin ? Number(priceMin) : null,
         priceMax: priceMax ? Number(priceMax) : null,
+        categorySlug: category?.slug ?? null,
       });
       if (id === reqId.current) setResult(r);
     }, 180);
     return () => clearTimeout(timer);
-  }, [query, sort, brand, type, condition, priceMin, priceMax]);
+  }, [query, sort, brand, type, condition, priceMin, priceMax, category?.slug]);
 
   useEffect(() => {
     if (!drawerOpen) return;
@@ -98,6 +108,7 @@ export function CatalogBrowser({ total, children }: { total: number; children: R
     priceMax,
     onPriceMin: setPriceMin,
     onPriceMax: setPriceMax,
+    attrs: category ? (["brand", "condition"] as FacetAttr[]) : undefined,
   };
 
   return (
@@ -109,7 +120,7 @@ export function CatalogBrowser({ total, children }: { total: number; children: R
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Buscá por modelo de TV o código…"
+          placeholder={category ? `Buscá dentro de ${category.name}…` : "Buscá por modelo de TV o código…"}
           aria-label="Buscar repuestos"
           className="h-[50px] w-full rounded-xl border border-line-strong bg-white pl-[46px] pr-[46px] text-[15px] text-ink outline-none focus:border-primary"
         />

@@ -52,7 +52,7 @@ export default async function ProductPage({
           <nav className="flex flex-wrap items-center gap-2 text-[13px] text-muted" aria-label="Migas de pan">
             <Link href="/" className="text-muted">Inicio</Link>
             <span className="text-line-strong">/</span>
-            <Link href="/productos" className="text-muted">{product.category}</Link>
+            <Link href={`/productos/${product.categorySlug}`} className="text-muted">{product.category}</Link>
             <span className="text-line-strong">/</span>
             <span className="font-medium text-ink">{product.title}</span>
           </nav>
@@ -75,7 +75,7 @@ export default async function ProductPage({
         <JsonLd
           data={breadcrumbLd([
             { name: "Inicio", url: SITE.url },
-            { name: product.category, url: `${SITE.url}/productos` },
+            { name: product.category, url: `${SITE.url}/productos/${product.categorySlug}` },
             { name: product.title, url: `${SITE.url}/producto/${product.slug}` },
           ])}
         />

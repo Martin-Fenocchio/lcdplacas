@@ -21,6 +21,8 @@ interface FilterPanelProps {
   priceMax: string;
   onPriceMin: (v: string) => void;
   onPriceMax: (v: string) => void;
+  /** Which facet groups to render. Defaults to all. */
+  attrs?: FacetAttr[];
 }
 
 function FacetGroup({
@@ -86,10 +88,12 @@ export function FilterPanel({
   priceMax,
   onPriceMin,
   onPriceMax,
+  attrs,
 }: FilterPanelProps) {
+  const groups = attrs ? GROUPS.filter((g) => attrs.includes(g.attr)) : GROUPS;
   return (
     <div>
-      {GROUPS.map((g) => (
+      {groups.map((g) => (
         <FacetGroup key={g.attr} {...g} facets={facets} selected={selected} onToggle={onToggle} />
       ))}
 

@@ -185,6 +185,11 @@ export function relatedProducts(product: Product, limit = 8): ProductDetail[] {
   return [...sameCategory, ...sameBrand].slice(0, limit);
 }
 
+/** All products in a category, in catalog order. */
+export function productsByCategory(categorySlug: string): ProductDetail[] {
+  return ALL_PRODUCTS.filter((p) => p.categorySlug === categorySlug);
+}
+
 /** The quality check, reused across pages. */
 export const QUALITY_CHECKS = [
   "Sintonía",
