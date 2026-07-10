@@ -14,7 +14,7 @@ export function CatalogPagination() {
       </button>
 
       <nav className="flex items-center gap-1.5" aria-label="Paginación">
-        <button type="button" aria-label="Anterior" className={cn(PAGE_BTN, "border-line bg-white text-faint")}>
+        <button type="button" aria-label="Anterior" className={cn(PAGE_BTN, "border-line bg-white text-muted")}>
           <ChevronLeft className="h-4 w-4" />
         </button>
         <button type="button" aria-current="page" className={cn(PAGE_BTN, "border-primary bg-primary text-white")}>
@@ -22,7 +22,7 @@ export function CatalogPagination() {
         </button>
         <button type="button" className={cn(PAGE_BTN, "border-line bg-white text-body")}>2</button>
         <button type="button" className={cn(PAGE_BTN, "border-line bg-white text-body")}>3</button>
-        <span className="px-1 text-faint">…</span>
+        <span className="px-1 text-muted">…</span>
         <button type="button" className={cn(PAGE_BTN, "border-line bg-white text-body")}>9</button>
         <button type="button" aria-label="Siguiente" className={cn(PAGE_BTN, "border-line bg-white text-body")}>
           <ChevronRight className="h-4 w-4" />

@@ -95,7 +95,7 @@ export function Hero() {
           </motion.form>
 
           <motion.div variants={item} className="mt-4 flex flex-wrap items-center gap-2 text-[13px] text-muted">
-            <span className="text-faint">Populares:</span>
+            <span className="text-muted">Populares:</span>
             {POPULAR.map((term) => (
               <Link
                 key={term}

@@ -27,7 +27,7 @@ function CheckRow({ label, count, checked }: Row) {
     <label className="flex cursor-pointer items-center gap-2.5 py-[5px] text-sm text-body">
       <input type="checkbox" defaultChecked={checked} className="h-[17px] w-[17px] accent-primary" />
       {label}
-      {count !== undefined && <span className="ml-auto text-xs text-faint">{count}</span>}
+      {count !== undefined && <span className="ml-auto text-xs text-muted">{count}</span>}
     </label>
   );
 }

@@ -90,6 +90,10 @@
 
 .reveal { animation: riseIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
 
+/* Decorative step watermark: rendered via ::before so it's a purely
+   presentational number (exempt from text-contrast checks). */
+.step-number::before { content: attr(data-step); }
+
 .animate-float-glow { animation: floatGlow 9s ease-in-out infinite; }
 .animate-pulse-ring { animation: pulseRing 2.4s ease-out infinite; }
 

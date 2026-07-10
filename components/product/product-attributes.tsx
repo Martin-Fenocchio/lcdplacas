@@ -17,7 +17,7 @@ export function ProductAttributes({ product }: { product: ProductDetail }) {
       <div className="grid grid-cols-3 gap-3.5 max-[899px]:grid-cols-1">
         {attributes.map((attr) => (
           <div key={attr.label} className="rounded-xl border border-line px-[18px] py-4">
-            <div className="text-[12.5px] font-medium text-faint">{attr.label}</div>
+            <div className="text-[12.5px] font-medium text-muted">{attr.label}</div>
             <div className={cn("mt-[3px] font-semibold text-ink", attr.mono && "font-mono text-sm")}>
               {attr.value}
             </div>

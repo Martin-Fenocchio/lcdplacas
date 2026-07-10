@@ -13,7 +13,7 @@ export function ProductPurchase({ product }: { product: ProductDetail }) {
 
   return (
     <motion.div variants={stagger(0.08, 0.1)} initial="hidden" animate="show">
-      <motion.div variants={fadeUp} className="text-[13px] font-medium text-faint">
+      <motion.div variants={fadeUp} className="text-[13px] font-medium text-muted">
         {product.brand}
       </motion.div>
       <motion.h1 variants={fadeUp} className="mt-[5px] text-3xl font-bold leading-[1.15]">
@@ -25,7 +25,7 @@ export function ProductPurchase({ product }: { product: ProductDetail }) {
           Cód. {product.code}
         </span>
         {product.inStock && (
-          <span className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-success">
+          <span className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-green-700">
             <span className="h-2 w-2 rounded-full bg-success" />
             En stock
           </span>
@@ -82,7 +82,7 @@ export function ProductPurchase({ product }: { product: ProductDetail }) {
             Calcular
           </button>
         </div>
-        <div className="mt-2.5 text-[12.5px] text-faint">Envíos a todo el país por Correo Argentino.</div>
+        <div className="mt-2.5 text-[12.5px] text-muted">Envíos a todo el país por Correo Argentino.</div>
       </motion.div>
     </motion.div>
   );

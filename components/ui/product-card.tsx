@@ -44,7 +44,7 @@ export function ProductCard({ product, variant = "default" }: ProductCardProps) 
       </div>
 
       <div className="flex flex-1 flex-col px-[15px] pb-4 pt-3.5">
-        <div className="text-[11.5px] font-medium text-faint">{product.brand}</div>
+        <div className="text-[11.5px] font-medium text-muted">{product.brand}</div>
         <div className="mt-[3px] line-clamp-2 min-h-[39px] font-display text-[15px] font-semibold leading-[1.3] text-ink">
           {product.title}
         </div>

@@ -75,7 +75,7 @@ export function ImagePlaceholder({
       style={{ background: STRIPES[stripe] }}
     >
       <GlyphIcon kind={glyph} className={cn("text-faint", glyphClassName)} />
-      {label && <span className={cn("font-mono text-faint tracking-wide", labelClassName)}>{label}</span>}
+      {label && <span className={cn("font-mono text-muted tracking-wide", labelClassName)}>{label}</span>}
     </div>
   );
 }

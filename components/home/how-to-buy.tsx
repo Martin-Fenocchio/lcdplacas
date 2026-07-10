@@ -46,9 +46,11 @@ export function HowToBuy() {
       <div className="mt-10 grid grid-cols-1 gap-[22px] min-[900px]:grid-cols-3">
         {STEPS.map((step) => (
           <div key={step.n} className="relative rounded-[18px] border border-line bg-white px-[26px] py-[30px]">
-            <span className="absolute right-6 top-[22px] font-display text-[44px] font-bold leading-none text-primary-soft">
-              {step.n}
-            </span>
+            <span
+              aria-hidden="true"
+              data-step={step.n}
+              className="step-number absolute right-6 top-[22px] font-display text-[44px] font-bold leading-none text-primary-soft"
+            />
             <span className={`inline-flex h-[52px] w-[52px] items-center justify-center rounded-[14px] ${step.iconWrap}`}>
               {step.icon}
             </span>

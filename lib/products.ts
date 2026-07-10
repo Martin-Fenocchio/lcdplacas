@@ -99,7 +99,7 @@ export const QUALITY_CHECKS = [
 /** Tailwind classes for a condition badge. */
 export function conditionBadgeClass(condition: Condition): string {
   return condition === "Nueva"
-    ? "bg-success-soft text-success border border-success-border"
+    ? "bg-success-soft text-green-700 border border-success-border"
     : "bg-slate-100 text-slate-600 border border-line";
 }
 

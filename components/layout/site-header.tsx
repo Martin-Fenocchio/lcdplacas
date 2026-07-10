@@ -61,7 +61,7 @@ export function SiteHeader() {
 
         <button
           type="button"
-          aria-label="Ver carrito"
+          aria-label="Ver carrito, 0 productos"
           className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] border border-line bg-white"
         >
           <Cart className="h-5 w-5 text-ink" />
