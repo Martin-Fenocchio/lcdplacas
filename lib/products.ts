@@ -185,22 +185,6 @@ export function relatedProducts(product: Product, limit = 8): ProductDetail[] {
   return [...sameCategory, ...sameBrand].slice(0, limit);
 }
 
-/** Facet counts for the catalog filter sidebar, derived from real data. */
-export function catalogFacets(): {
-  brands: { label: string; count: number }[];
-  types: { label: string; count: number }[];
-} {
-  const byBrand = new Map<string, number>();
-  const byType = new Map<string, number>();
-  for (const p of ALL_PRODUCTS) {
-    if (p.brand) byBrand.set(p.brand, (byBrand.get(p.brand) ?? 0) + 1);
-    byType.set(p.type, (byType.get(p.type) ?? 0) + 1);
-  }
-  const sortDesc = (m: Map<string, number>) =>
-    [...m.entries()].sort((a, b) => b[1] - a[1]).map(([label, count]) => ({ label, count }));
-  return { brands: sortDesc(byBrand), types: sortDesc(byType) };
-}
-
 /** The quality check, reused across pages. */
 export const QUALITY_CHECKS = [
   "Sintonía",
