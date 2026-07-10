@@ -9,15 +9,15 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 
 psql "$SUPABASE_DB_URL" -tAc "
-  select coalesce(
-    json_agg(row_to_json(t) order by t.category_slug, t.slug),
-    '[]'
-  )
-  from (
-    select slug, title, code, price, currency, condition,
-           category, category_slug as \"categorySlug\", description, url, images
-    from public.products
-  ) t
+  select coalesce(json_agg(
+    json_build_object(
+      'slug', slug, 'title', title, 'code', code, 'price', price,
+      'currency', currency, 'condition', condition, 'category', category,
+      'categorySlug', category_slug, 'description', description,
+      'url', url, 'images', images
+    ) order by category_slug, slug
+  ), '[]')
+  from public.products
 " | python3 -m json.tool > "$ROOT/data/products.json"
 
 echo "wrote data/products.json ($(python3 -c "import json;print(len(json.load(open('$ROOT/data/products.json'))))") products)"
