@@ -1,26 +1,99 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ------------------------------------------------------------------ *
+ * Design tokens — mapped to Tailwind v4 utilities via @theme.
+ * Palette + fonts come from docs/design-system.md.
+ * ------------------------------------------------------------------ */
+@theme {
+  /* Fonts (values injected by next/font in app/layout.tsx) */
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), sans-serif;
+
+  /* Ink / text */
+  --color-ink: #0f172a;
+  --color-body: #334155;
+  --color-muted: #64748b;
+  --color-faint: #94a3b8;
+
+  /* Lines / surfaces */
+  --color-line: #e2e8f0;
+  --color-line-strong: #cbd5e1;
+  --color-surface: #f8fafc;
+
+  /* Primary blue */
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-primary-strong: #1e40af;
+  --color-primary-soft: #eff6ff;
+  --color-primary-softer: #dbeafe;
+  --color-sky: #60a5fa;
+
+  /* Accent cyan */
+  --color-accent: #06b6d4;
+  --color-accent-light: #22d3ee;
+
+  /* WhatsApp */
+  --color-whatsapp: #25d366;
+  --color-whatsapp-ink: #052e16;
+
+  /* Semantic */
+  --color-success: #16a34a;
+  --color-success-soft: #ecfdf5;
+  --color-success-border: #bbf7d0;
+  --color-danger: #dc2626;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ------------------------------------------------------------------ *
+ * Base
+ * ------------------------------------------------------------------ */
+@layer base {
+  body {
+    background: #ffffff;
+    color: var(--color-body);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    color: var(--color-ink);
+    letter-spacing: -0.02em;
+  }
+  a {
+    color: var(--color-primary-hover);
+    text-decoration: none;
+  }
+  a:hover {
+    color: var(--color-primary-strong);
+  }
+  ::placeholder {
+    color: var(--color-faint);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ------------------------------------------------------------------ *
+ * Motion — entrance reveal + brand animations.
+ * The Reveal component toggles data-reveal; honors reduced motion.
+ * ------------------------------------------------------------------ */
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes floatGlow {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(20px, -16px); }
+}
+@keyframes pulseRing {
+  0%   { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.45); }
+  70%  { box-shadow: 0 0 0 14px rgba(37, 211, 102, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+
+.reveal { animation: riseIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+.animate-float-glow { animation: floatGlow 9s ease-in-out infinite; }
+.animate-pulse-ring { animation: pulseRing 2.4s ease-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { animation: none !important; }
+  .animate-float-glow, .animate-pulse-ring { animation: none !important; }
 }
