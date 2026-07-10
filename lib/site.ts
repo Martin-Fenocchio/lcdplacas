@@ -52,7 +52,7 @@ export const CATEGORIES: {
   { name: "Componentes", tagline: "Repuestos varios", slug: "componentes", icon: "componentes" },
 ];
 
-export const BRANDS = ["LG", "Noblex", "Hisense", "Philco", "Sansei", "Samsung"] as const;
+export const BRANDS = ["Hisense", "Noblex", "Sansei", "LG", "Philco", "Sanyo"] as const;
 
 export const PAYMENT_METHODS = ["Transferencia", "Efectivo", "Depósito", "Correo Argentino"] as const;
 

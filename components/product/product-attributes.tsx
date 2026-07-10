@@ -7,9 +7,9 @@ export function ProductAttributes({ product }: { product: ProductDetail }) {
     { label: "Tipo", value: product.type },
     { label: "Estado", value: product.condition },
     { label: "Código de parte", value: product.code, mono: true },
-    { label: "Modelos de TV compatibles", value: product.compatibleModels },
+    { label: "Modelo de TV compatible", value: product.compatibleModels },
     { label: "Garantía", value: "Probada en 5 puntos" },
-  ];
+  ].filter((attr) => attr.value);
 
   return (
     <section className="mx-auto max-w-[1280px] px-6 pb-2 pt-10">

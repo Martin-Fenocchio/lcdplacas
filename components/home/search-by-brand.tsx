@@ -5,7 +5,7 @@ const PANEL = { background: "linear-gradient(180deg,#F8FAFC,#ffffff)" } as const
 
 export function SearchByBrand() {
   return (
-    <section className="mx-auto max-w-[1280px] px-6 py-[52px]">
+    <section className="mx-auto max-w-[1280px] px-6 py-10 min-[900px]:py-[52px]">
       <div className="rounded-[20px] border border-line px-8 py-[34px]" style={PANEL}>
         <div className="mx-auto max-w-[640px] text-center">
           <h2 className="text-[26px] font-semibold">Encontrá el repuesto exacto para tu TV</h2>

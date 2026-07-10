@@ -70,6 +70,19 @@ export function SiteHeader() {
           </span>
         </button>
       </div>
+
+      {/* Mobile-only persistent search (header search is desktop-only). */}
+      <form action="/productos" className="relative mx-auto max-w-[1280px] px-6 pb-3 min-[900px]:hidden">
+        <Search className="pointer-events-none absolute left-[38px] top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-muted" />
+        <input
+          id="mobile-search"
+          type="search"
+          name="q"
+          placeholder="Buscá por modelo de TV o código…"
+          aria-label="Buscar repuestos"
+          className="h-11 w-full rounded-[10px] border border-line bg-surface pl-[42px] pr-4 text-sm text-body outline-none focus:border-primary"
+        />
+      </form>
     </header>
   );
 }

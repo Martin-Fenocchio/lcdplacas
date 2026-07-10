@@ -35,7 +35,7 @@ const STEPS: Step[] = [
 
 export function HowToBuy() {
   return (
-    <section className="mx-auto max-w-[1280px] px-6 py-[76px]">
+    <section className="mx-auto max-w-[1280px] px-6 py-12 min-[900px]:py-[76px]">
       <div className="mx-auto max-w-[620px] text-center">
         <h2 className="text-[32px] font-semibold">Comprar es simple</h2>
         <p className="mt-2 text-base text-muted">

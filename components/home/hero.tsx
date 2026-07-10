@@ -50,7 +50,7 @@ export function Hero() {
       <div className="absolute inset-0" style={HERO_TINT} />
       <div className="animate-float-glow pointer-events-none absolute rounded-full" style={HERO_GLOW} />
 
-      <div className="relative mx-auto grid max-w-[1280px] grid-cols-1 items-center gap-8 px-6 pb-[84px] pt-[76px] min-[900px]:grid-cols-[1.05fr_0.95fr] min-[900px]:gap-14">
+      <div className="relative mx-auto grid max-w-[1280px] grid-cols-1 items-center gap-8 px-6 pb-14 pt-12 min-[900px]:grid-cols-[1.05fr_0.95fr] min-[900px]:gap-14 min-[900px]:pb-[84px] min-[900px]:pt-[76px]">
         <motion.div variants={leftGroup} initial="hidden" animate="show">
           <motion.span
             variants={item}

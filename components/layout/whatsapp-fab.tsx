@@ -9,7 +9,7 @@ export function WhatsappFab() {
       rel="noopener noreferrer"
       title="¿Necesitás ayuda?"
       aria-label="Escribinos por WhatsApp"
-      className="animate-pulse-ring fixed bottom-6 right-6 z-[60] inline-flex h-[58px] w-[58px] items-center justify-center rounded-full bg-whatsapp text-white shadow-[0_10px_30px_rgba(37,211,102,0.4)]"
+      className="animate-pulse-ring fixed bottom-6 right-6 z-[60] hidden h-[58px] w-[58px] items-center justify-center rounded-full bg-whatsapp text-white shadow-[0_10px_30px_rgba(37,211,102,0.4)] min-[900px]:inline-flex"
     >
       <Whatsapp className="h-[30px] w-[30px]" />
     </a>

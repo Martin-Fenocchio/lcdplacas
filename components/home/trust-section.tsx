@@ -5,7 +5,7 @@ import { CheckThick } from "@/components/ui/icons";
 
 export function TrustSection() {
   return (
-    <section className="mx-auto max-w-[1280px] px-6 py-[76px]">
+    <section className="mx-auto max-w-[1280px] px-6 py-12 min-[900px]:py-[76px]">
       <div className="grid grid-cols-1 items-center gap-8 min-[900px]:grid-cols-[0.9fr_1.1fr] min-[900px]:gap-[52px]">
         <div className="overflow-hidden rounded-[22px] border border-line shadow-[0_24px_50px_-28px_rgba(15,23,42,0.35)]">
           <ImagePlaceholder

@@ -43,6 +43,21 @@ export const Search = (p: IconProps) => (
   </Stroke>
 );
 
+export const Home = (p: IconProps) => (
+  <Stroke {...p}>
+    <path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" />
+  </Stroke>
+);
+
+export const Grid = (p: IconProps) => (
+  <Stroke {...p}>
+    <rect x="3" y="3" width="7" height="7" rx="1" />
+    <rect x="14" y="3" width="7" height="7" rx="1" />
+    <rect x="3" y="14" width="7" height="7" rx="1" />
+    <rect x="14" y="14" width="7" height="7" rx="1" />
+  </Stroke>
+);
+
 export const ChevronDown = (p: IconProps) => (
   <Stroke strokeWidth={2} {...p}>
     <path d="m6 9 6 6 6-6" />

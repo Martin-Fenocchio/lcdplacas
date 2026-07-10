@@ -7,6 +7,7 @@ import { AnnouncementBar } from "@/components/layout/announcement-bar";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { WhatsappFab } from "@/components/layout/whatsapp-fab";
+import { MobileTabBar } from "@/components/layout/mobile-tab-bar";
 import { JsonLd } from "@/components/ui/json-ld";
 
 const inter = Inter({
@@ -59,12 +60,13 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es-AR" className={`${inter.variable} ${spaceGrotesk.variable}`}>
-      <body className="min-h-screen overflow-x-hidden bg-white font-sans text-body antialiased">
+      <body className="min-h-screen overflow-x-hidden bg-white pb-16 font-sans text-body antialiased min-[900px]:pb-0">
         <AnnouncementBar />
         <SiteHeader />
         {children}
         <SiteFooter />
         <WhatsappFab />
+        <MobileTabBar />
         <JsonLd data={organizationLd()} />
         <JsonLd data={websiteLd()} />
         <JsonLd data={localBusinessLd()} />

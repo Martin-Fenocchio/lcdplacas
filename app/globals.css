@@ -94,6 +94,10 @@
    presentational number (exempt from text-contrast checks). */
 .step-number::before { content: attr(data-step); }
 
+/* Hide scrollbars on horizontal scrollers (mobile carousels). */
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
 .animate-float-glow { animation: floatGlow 9s ease-in-out infinite; }
 .animate-pulse-ring { animation: pulseRing 2.4s ease-out infinite; }
 

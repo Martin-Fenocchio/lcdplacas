@@ -38,7 +38,7 @@ const PROPS: Prop[] = [
 export function ValueProps() {
   return (
     <section className="bg-ink text-slate-200">
-      <div className="mx-auto grid max-w-[1280px] grid-cols-2 gap-5 px-6 py-11 max-[560px]:grid-cols-1 min-[900px]:grid-cols-4">
+      <div className="mx-auto grid max-w-[1280px] grid-cols-2 gap-5 px-6 py-8 max-[560px]:grid-cols-1 min-[900px]:grid-cols-4 min-[900px]:py-11">
         {PROPS.map((prop) => (
           <div key={prop.title} className="flex items-center gap-3.5">
             <span className={`inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${prop.iconWrap}`}>

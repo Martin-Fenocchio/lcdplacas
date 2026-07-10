@@ -9,21 +9,24 @@ import { Cart, Truck, Whatsapp } from "@/components/ui/icons";
 
 export function ProductPurchase({ product }: { product: ProductDetail }) {
   const priceFull = product.price.toLocaleString("es-AR", { minimumFractionDigits: 2 });
-  const waMessage = `Hola, quiero consultar por: ${product.title} (Cód. ${product.code}) — https://www.lcdplacas.com/producto/${product.slug}`;
+  const codeSuffix = product.code ? ` (Cód. ${product.code})` : "";
+  const waMessage = `Hola, quiero consultar por: ${product.title}${codeSuffix} — https://www.lcdplacas.com/producto/${product.slug}`;
 
   return (
     <motion.div variants={stagger(0.08, 0.1)} initial="hidden" animate="show">
       <motion.div variants={fadeUp} className="text-[13px] font-medium text-muted">
-        {product.brand}
+        {product.brand || product.type}
       </motion.div>
       <motion.h1 variants={fadeUp} className="mt-[5px] text-3xl font-bold leading-[1.15]">
         {product.title}
       </motion.h1>
 
       <motion.div variants={fadeUp} className="mt-2.5 flex flex-wrap items-center gap-2.5">
-        <span className="rounded-lg border border-line bg-slate-100 px-2.5 py-1 font-mono text-[13px] text-body">
-          Cód. {product.code}
-        </span>
+        {product.code && (
+          <span className="rounded-lg border border-line bg-slate-100 px-2.5 py-1 font-mono text-[13px] text-body">
+            Cód. {product.code}
+          </span>
+        )}
         {product.inStock && (
           <span className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-green-700">
             <span className="h-2 w-2 rounded-full bg-success" />

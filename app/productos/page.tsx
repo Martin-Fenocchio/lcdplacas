@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CATALOG_PRODUCTS } from "@/lib/products";
+import { ALL_PRODUCTS } from "@/lib/products";
 import { Reveal } from "@/components/ui/reveal";
 import { ProductCard } from "@/components/ui/product-card";
 import { FiltersSidebar } from "@/components/catalog/filters-sidebar";
-import { CatalogPagination } from "@/components/catalog/catalog-pagination";
-import { ChevronDown, Search, Sliders, X } from "@/components/ui/icons";
+import { ChevronDown, Search, Sliders } from "@/components/ui/icons";
 
 export const metadata: Metadata = {
   title: "Productos",
@@ -15,7 +14,6 @@ export const metadata: Metadata = {
 };
 
 const SORT_OPTIONS = ["Más nuevo", "Precio: menor a mayor", "Precio: mayor a menor", "Relevancia"];
-const ACTIVE_FILTERS = ["Hisense", "En stock"];
 
 export default function CatalogPage() {
   return (
@@ -32,8 +30,7 @@ export default function CatalogPage() {
             <div>
               <h1 className="text-4xl font-bold">Productos</h1>
               <p className="mt-1.5 text-[15px] text-muted">
-                <strong className="text-ink">124</strong> repuestos · resultados para{" "}
-                <strong className="text-ink">“55U60H”</strong>
+                <strong className="text-ink">{ALL_PRODUCTS.length}</strong> repuestos probados y garantizados
               </p>
             </div>
             <div className="flex flex-wrap items-center justify-end gap-2.5">
@@ -68,42 +65,24 @@ export default function CatalogPage() {
             <FiltersSidebar />
 
             <div>
-              <form action="/productos" className="relative mb-4">
+              <form action="/productos" className="relative mb-5">
                 <Search className="pointer-events-none absolute left-4 top-1/2 h-[19px] w-[19px] -translate-y-1/2 text-muted" />
                 <input
                   type="search"
                   name="q"
-                  defaultValue="55U60H"
                   placeholder="Buscá por modelo de TV o código…"
                   aria-label="Buscar repuestos"
                   className="h-[50px] w-full rounded-xl border border-line-strong bg-white pl-[46px] pr-[18px] text-[15px] text-ink outline-none focus:border-primary"
                 />
               </form>
 
-              <div className="mb-5 flex flex-wrap items-center gap-2">
-                {ACTIVE_FILTERS.map((filter) => (
-                  <span
-                    key={filter}
-                    className="inline-flex items-center gap-[7px] rounded-full border border-primary-softer bg-primary-soft px-3 py-1.5 text-[13px] font-medium text-primary-hover"
-                  >
-                    {filter}
-                    <X className="h-[13px] w-[13px]" />
-                  </span>
-                ))}
-                <Link href="/productos" className="ml-1 text-[13px] font-medium">
-                  Limpiar filtros
-                </Link>
-              </div>
-
-              <div className="grid grid-cols-3 gap-5 max-[899px]:grid-cols-2 max-[560px]:grid-cols-1">
-                {CATALOG_PRODUCTS.map((product, i) => (
-                  <Reveal key={product.slug} delay={i * 0.04} className="h-full">
-                    <ProductCard product={product} />
+              <div className="grid grid-cols-3 gap-4 max-[899px]:grid-cols-2 min-[900px]:gap-5">
+                {ALL_PRODUCTS.map((product, i) => (
+                  <Reveal key={product.slug} delay={Math.min(i, 11) * 0.04} className="h-full">
+                    <ProductCard product={product} priority={i < 3} />
                   </Reveal>
                 ))}
               </div>
-
-              <CatalogPagination />
             </div>
           </div>
         </div>

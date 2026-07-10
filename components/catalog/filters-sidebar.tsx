@@ -1,26 +1,13 @@
 import Link from "next/link";
+import { catalogFacets } from "@/lib/products";
 
 type Row = { label: string; count?: number; checked?: boolean };
 
-const MARCAS: Row[] = [
-  { label: "Hisense", count: 32, checked: true },
-  { label: "LG", count: 41 },
-  { label: "Noblex", count: 28 },
-  { label: "Philco", count: 19 },
-  { label: "Samsung", count: 15 },
-];
-
-const TIPOS: Row[] = [
-  { label: "Placas Main", count: 54 },
-  { label: "Fuentes", count: 31 },
-  { label: "T-Con", count: 22 },
-  { label: "Tiras de LEDs", count: 12 },
-  { label: "Componentes", count: 5 },
-];
+const { brands: MARCAS, types: TIPOS } = catalogFacets();
 
 const ESTADOS: Row[] = [{ label: "Nueva" }, { label: "Scrap nueva" }, { label: "Scrap usada" }];
 
-const DISPONIBILIDAD: Row[] = [{ label: "En stock", checked: true }, { label: "Bajo pedido" }];
+const DISPONIBILIDAD: Row[] = [{ label: "En stock" }, { label: "Bajo pedido" }];
 
 function CheckRow({ label, count, checked }: Row) {
   return (

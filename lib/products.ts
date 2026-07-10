@@ -1,93 +1,207 @@
 /**
- * Sample catalog data. This is placeholder content for the UI build —
- * the real data source (CMS / DB) is intentionally out of scope for now.
+ * Product catalog. Data is loaded from `data/products.json` — real products
+ * scraped from the current lcdplacas.com storefront (test batch of 30). Brand,
+ * type, compatible model and display copy are derived here from the raw title
+ * so the JSON can stay a faithful snapshot of what the live site exposes.
+ * Swap the JSON import for a CMS/DB fetch when the real data source lands.
  */
+import rawProducts from "@/data/products.json";
 
 export type Condition = "Nueva" | "Scrap nueva" | "Scrap usada";
 
 export interface Product {
   slug: string;
   title: string;
+  /** Part number, e.g. "RSAG7.820.11493". Empty when the listing has none. */
   code: string;
+  /** TV brand derived from the title. Empty for generic components. */
   brand: string;
   condition: Condition;
   price: number;
   inStock: boolean;
-  /** Placeholder image filename shown until real photography is wired in. */
-  imageLabel?: string;
+  category: string;
+  categorySlug: string;
+  /** "Placa Main", "Fuente", … derived from the category. */
+  type: string;
+  /** TV model(s) the part fits, derived from the title. Empty when unknown. */
+  compatibleModels: string;
+  /** Public image paths (`/products/…`). Empty falls back to a placeholder. */
+  images: string[];
+}
+
+export interface ProductDetail extends Product {
+  description: string[];
+}
+
+interface RawProduct {
+  slug: string;
+  title: string;
+  code: string | null;
+  price: number;
+  currency: string;
+  condition: string | null;
+  category: string;
+  categorySlug: string;
+  description: string;
+  url: string;
+  images: string[];
+}
+
+/** TV brands sold, matched against the product title (longest-first-ish). */
+const KNOWN_BRANDS = [
+  "Hisense", "Noblex", "Sansei", "Sanyo", "Philco", "Samsung", "TCL", "RCA",
+  "BGH", "JVC", "Kanji", "Enova", "Hitachi", "Panasonic", "Sharp", "Sony",
+  "Top House", "Ken Brown", "Admiral", "Panavox", "LG",
+];
+
+const TYPE_BY_CATEGORY: Record<string, string> = {
+  "placas-main-y-monoplacas": "Placa Main",
+  fuentes: "Fuente",
+  "t-con": "T-Con",
+  "tiras-de-leds": "Tira de LED",
+  componentes: "Componente",
+};
+
+function deriveBrand(title: string): string {
+  for (const brand of KNOWN_BRANDS) {
+    if (new RegExp(`\\b${brand}`, "i").test(title)) return brand;
+  }
+  return "";
+}
+
+/** Pull the TV model out of the title: the text between the brand and the code. */
+function deriveModels(title: string, brand: string): string {
+  if (!brand) return "";
+  const head = title.split(/,|c[oó]digo/i)[0];
+  const idx = head.toLowerCase().indexOf(brand.toLowerCase());
+  if (idx < 0) return "";
+  return head
+    .slice(idx + brand.length)
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/** Normalise the scraped condition; default unspecified listings to "Nueva". */
+function normalizeCondition(raw: string | null): Condition {
+  const value = (raw ?? "").toLowerCase();
+  if (value.includes("usad")) return "Scrap usada";
+  if (value.includes("scrap")) return "Scrap nueva";
+  return "Nueva";
+}
+
+/** Build clean display copy from real attributes (site copy is very thin). */
+function buildDescription(p: {
+  title: string;
+  type: string;
+  brand: string;
+  compatibleModels: string;
+  code: string;
+}): string[] {
+  const intro = p.brand
+    ? `${p.type} para TV LED ${p.brand}${p.compatibleModels ? ` ${p.compatibleModels}` : ""}` +
+      `${p.code ? `, código ${p.code}` : ""}. Repuesto probado y listo para instalar.`
+    : `${p.title}.`;
+
+  return [
+    intro,
+    "Escribinos por WhatsApp para confirmar la compatibilidad con tu modelo antes de comprar. " +
+      "Hacemos envíos a todo el país por Correo Argentino.",
+  ];
+}
+
+function toProduct(raw: RawProduct): ProductDetail {
+  const brand = deriveBrand(raw.title);
+  const type = TYPE_BY_CATEGORY[raw.categorySlug] ?? "Repuesto";
+  const code = raw.code ?? "";
+  const compatibleModels = deriveModels(raw.title, brand);
+
+  return {
+    slug: raw.slug,
+    title: raw.title,
+    code,
+    brand,
+    condition: normalizeCondition(raw.condition),
+    price: raw.price,
+    inStock: true,
+    category: raw.category,
+    categorySlug: raw.categorySlug,
+    type,
+    compatibleModels,
+    images: raw.images ?? [],
+    description: buildDescription({ title: raw.title, type, brand, compatibleModels, code }),
+  };
+}
+
+/** Every product, in catalog order. */
+export const ALL_PRODUCTS: ProductDetail[] = (rawProducts as RawProduct[]).map(toProduct);
+
+const BY_SLUG = new Map(ALL_PRODUCTS.map((p) => [p.slug, p]));
+
+export function getProductBySlug(slug: string): ProductDetail | undefined {
+  return BY_SLUG.get(slug);
+}
+
+/** Round-robin across categories so the home strip shows variety. */
+function interleaveByCategory(list: ProductDetail[], limit: number): ProductDetail[] {
+  const groups = new Map<string, ProductDetail[]>();
+  for (const p of list) {
+    const g = groups.get(p.categorySlug);
+    if (g) g.push(p);
+    else groups.set(p.categorySlug, [p]);
+  }
+  const out: ProductDetail[] = [];
+  let added = true;
+  while (out.length < limit && added) {
+    added = false;
+    for (const g of groups.values()) {
+      const next = g.shift();
+      if (next) {
+        out.push(next);
+        added = true;
+        if (out.length >= limit) break;
+      }
+    }
+  }
+  return out;
 }
 
 /** Home — "Últimos ingresos". */
-export const LATEST_PRODUCTS: Product[] = [
-  { slug: "placa-main-hisense-55u60h-rsag7820-11493", title: "Placa Main Hisense 55U60H", code: "RSAG7.820.11493", brand: "Hisense", condition: "Nueva", price: 84500, inStock: true },
-  { slug: "fuente-noblex-dk55x7500-jcm55", title: "Fuente Noblex DK55X7500", code: "JCM55-D.CJ", brand: "Noblex", condition: "Scrap nueva", price: 42000, inStock: true },
-  { slug: "placa-tcon-lg-43lm6300-6870c-0532a", title: "Placa T-Con LG 43LM6300", code: "6870C-0532A", brand: "LG", condition: "Nueva", price: 38900, inStock: true },
-  { slug: "tira-led-philco-pld43fs7a-svj430a05", title: "Tira de LED Philco PLD43FS7A", code: "SVJ430A05", brand: "Philco", condition: "Nueva", price: 26500, inStock: false },
-  { slug: "placa-main-sansei-tds2400-cv338h-a42", title: "Placa Main Sansei TDS2400", code: "CV338H-A42", brand: "Sansei", condition: "Scrap usada", price: 31000, inStock: true },
-  { slug: "fuente-lg-50un7300-eax67872805", title: "Fuente LG 50UN7300 EAX67872805", code: "EAX67872805", brand: "LG", condition: "Nueva", price: 57800, inStock: true },
-  { slug: "placa-tcon-samsung-un40j5200-bn41-02111a", title: "Placa T-Con Samsung UN40J5200", code: "BN41-02111A", brand: "Samsung", condition: "Scrap nueva", price: 29900, inStock: true },
-  { slug: "tira-led-noblex-di43x6500-crh-k430", title: "Tira de LED Noblex DI43X6500", code: "CRH-K430", brand: "Noblex", condition: "Nueva", price: 22400, inStock: true },
-];
+export const LATEST_PRODUCTS: ProductDetail[] = interleaveByCategory(ALL_PRODUCTS, 8);
 
-/** Catálogo — results grid. */
-export const CATALOG_PRODUCTS: Product[] = [
-  { slug: "placa-main-hisense-55u60h-rsag7820-11493", title: "Placa Main Hisense 55U60H", code: "RSAG7.820.11493", brand: "Hisense", condition: "Nueva", price: 84500, inStock: true },
-  { slug: "fuente-hisense-55u60h-rsag7820-10820", title: "Fuente Hisense 55U60H RSAG7", code: "RSAG7.820.10820", brand: "Hisense", condition: "Nueva", price: 51200, inStock: true },
-  { slug: "placa-tcon-hisense-55u60h-hv550qub-f5a", title: "Placa T-Con Hisense 55U60H", code: "HV550QUB-F5A", brand: "Hisense", condition: "Scrap nueva", price: 39800, inStock: true },
-  { slug: "tira-led-hisense-55u60h-jld550ea", title: "Tira de LED Hisense 55U60H", code: "JL.D550EA", brand: "Hisense", condition: "Nueva", price: 34500, inStock: true },
-  { slug: "placa-main-hisense-50a6h-rsag7820-12146", title: "Placa Main Hisense 50A6H", code: "RSAG7.820.12146", brand: "Hisense", condition: "Nueva", price: 78900, inStock: true },
-  { slug: "fuente-hisense-43a4h-rsag7820-11288", title: "Fuente Hisense 43A4H", code: "RSAG7.820.11288", brand: "Hisense", condition: "Scrap nueva", price: 44300, inStock: true },
-  { slug: "placa-main-hisense-32a4h-rsag7820-12421", title: "Placa Main Hisense 32A4H", code: "RSAG7.820.12421", brand: "Hisense", condition: "Nueva", price: 62000, inStock: false },
-  { slug: "placa-tcon-hisense-43a6h-cv338h-a50", title: "Placa T-Con Hisense 43A6H", code: "CV338H-A50", brand: "Hisense", condition: "Scrap usada", price: 28700, inStock: true },
-  { slug: "tira-led-hisense-50a6h-jld500ea", title: "Tira de LED Hisense 50A6H", code: "JL.D500EA", brand: "Hisense", condition: "Nueva", price: 31900, inStock: true },
-];
-
-/** Producto — "Repuestos para el mismo TV". */
-export const RELATED_PRODUCTS: Product[] = [
-  { slug: "fuente-hisense-55u60h-rsag7820-10820", title: "Fuente Hisense 55U60H", code: "RSAG7.820.10820", brand: "Hisense", condition: "Nueva", price: 51200, inStock: true, imageLabel: "hisense_repuesto.jpg" },
-  { slug: "placa-tcon-hisense-55u60h-hv550qub-f5a", title: "Placa T-Con Hisense 55U60H", code: "HV550QUB-F5A", brand: "Hisense", condition: "Scrap nueva", price: 39800, inStock: true, imageLabel: "hisense_repuesto.jpg" },
-  { slug: "tira-led-hisense-55u60h-jld550ea", title: "Tira de LED Hisense 55U60H", code: "JL.D550EA", brand: "Hisense", condition: "Nueva", price: 34500, inStock: true, imageLabel: "hisense_repuesto.jpg" },
-  { slug: "flex-hisense-55u60h-ccpd-tc550", title: "Flex de conexión Hisense 55U60H", code: "CCPD-TC550", brand: "Hisense", condition: "Nueva", price: 9800, inStock: true, imageLabel: "hisense_repuesto.jpg" },
-];
-
-export interface ProductDetail extends Product {
-  category: string;
-  categorySlug: string;
-  type: string;
-  compatibleModels: string;
-  images: string[];
-  description: string[];
-  included: string;
+/** Producto — other parts in the same category (fallback: same brand). */
+export function relatedProducts(product: Product, limit = 8): ProductDetail[] {
+  const sameCategory = ALL_PRODUCTS.filter(
+    (p) => p.slug !== product.slug && p.categorySlug === product.categorySlug,
+  );
+  if (sameCategory.length >= limit) return sameCategory.slice(0, limit);
+  const sameBrand = product.brand
+    ? ALL_PRODUCTS.filter(
+        (p) =>
+          p.slug !== product.slug &&
+          p.categorySlug !== product.categorySlug &&
+          p.brand === product.brand,
+      )
+    : [];
+  return [...sameCategory, ...sameBrand].slice(0, limit);
 }
 
-/** Featured product used by the Producto detail page (UI build). */
-export const FEATURED_PRODUCT: ProductDetail = {
-  slug: "placa-main-hisense-55u60h-rsag7820-11493",
-  title: "Placa Main Hisense 55U60H",
-  code: "RSAG7.820.11493",
-  brand: "Hisense",
-  condition: "Nueva",
-  price: 84500,
-  inStock: true,
-  category: "Placas Main",
-  categorySlug: "placas-main",
-  type: "Placa Main",
-  compatibleModels: "55U60H · 55U6H",
-  images: [
-    "hisense_55u60h_main_01.jpg",
-    "hisense_55u60h_main_02.jpg",
-    "hisense_55u60h_main_03.jpg",
-    "hisense_55u60h_main_04.jpg",
-  ],
-  description: [
-    "Placa main (monoplaca) original para TV LED Hisense 55U60H. Reemplazo directo para fallas de encendido, imagen sin sonido, cartelería o falta de señal. Compatible con los modelos indicados.",
-    "Cada unidad es probada en 5 puntos antes del envío: sintonía, sonido, salidas de LEDs, entradas USB/HDMI y conectividad. Se entrega lista para instalar.",
-    "Incluye: 1 (una) placa main. No incluye cables ni flexes, salvo aclaración.",
-  ],
-  included: "1 (una) placa main. No incluye cables ni flexes, salvo aclaración.",
-};
+/** Facet counts for the catalog filter sidebar, derived from real data. */
+export function catalogFacets(): {
+  brands: { label: string; count: number }[];
+  types: { label: string; count: number }[];
+} {
+  const byBrand = new Map<string, number>();
+  const byType = new Map<string, number>();
+  for (const p of ALL_PRODUCTS) {
+    if (p.brand) byBrand.set(p.brand, (byBrand.get(p.brand) ?? 0) + 1);
+    byType.set(p.type, (byType.get(p.type) ?? 0) + 1);
+  }
+  const sortDesc = (m: Map<string, number>) =>
+    [...m.entries()].sort((a, b) => b[1] - a[1]).map(([label, count]) => ({ label, count }));
+  return { brands: sortDesc(byBrand), types: sortDesc(byType) };
+}
 
-/** The 5-point quality check, reused across pages. */
+/** The quality check, reused across pages. */
 export const QUALITY_CHECKS = [
   "Sintonía",
   "Sonido",
@@ -101,9 +215,4 @@ export function conditionBadgeClass(condition: Condition): string {
   return condition === "Nueva"
     ? "bg-success-soft text-green-700 border border-success-border"
     : "bg-slate-100 text-slate-600 border border-line";
-}
-
-/** Placeholder image filename for a product card. */
-export function imageLabelFor(product: Product): string {
-  return product.imageLabel ?? `${product.brand.toLowerCase()}_placa.jpg`;
 }

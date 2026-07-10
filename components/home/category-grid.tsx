@@ -3,10 +3,17 @@ import { CATEGORIES } from "@/lib/site";
 import { Reveal } from "@/components/ui/reveal";
 import { ArrowRight, CategoryGlyph } from "@/components/ui/icons";
 
+const CONTAINER =
+  "no-scrollbar -mx-6 mt-[26px] flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-2 " +
+  "min-[900px]:mx-0 min-[900px]:grid min-[900px]:grid-cols-5 min-[900px]:gap-4 min-[900px]:overflow-visible min-[900px]:px-0 min-[900px]:pb-0";
+
+const ITEM =
+  "h-full shrink-0 basis-[60%] snap-start min-[520px]:basis-[40%] min-[768px]:basis-[26%] min-[900px]:basis-auto";
+
 export function CategoryGrid() {
   return (
     <section className="bg-ink">
-      <div className="mx-auto max-w-[1280px] px-6 py-[72px]">
+      <div className="mx-auto max-w-[1280px] px-6 py-12 min-[900px]:py-[72px]">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <h2 className="text-3xl font-semibold text-white">Categorías</h2>
@@ -18,9 +25,9 @@ export function CategoryGrid() {
           </Link>
         </div>
 
-        <div className="mt-[26px] grid grid-cols-2 gap-4 max-[560px]:grid-cols-1 min-[900px]:grid-cols-5">
+        <div className={CONTAINER}>
           {CATEGORIES.map((cat, i) => (
-            <Reveal key={cat.slug} delay={0.02 + i * 0.05} className="h-full">
+            <Reveal key={cat.slug} delay={0.02 + i * 0.05} className={ITEM}>
               <Link
                 href="/productos"
                 className="flex h-full flex-col gap-3.5 rounded-2xl border border-white/10 bg-white/[0.04] p-[22px] transition-[translate,box-shadow,border-color,background-color] duration-300 ease-out hover:-translate-y-1 hover:border-sky/60 hover:bg-white/[0.07] hover:shadow-[0_16px_34px_-20px_rgba(37,99,235,0.7)]"
