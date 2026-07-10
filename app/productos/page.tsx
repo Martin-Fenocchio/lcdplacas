@@ -4,7 +4,8 @@ import { ALL_PRODUCTS } from "@/lib/products";
 import { Reveal } from "@/components/ui/reveal";
 import { ProductCard } from "@/components/ui/product-card";
 import { FiltersSidebar } from "@/components/catalog/filters-sidebar";
-import { ChevronDown, Search, Sliders } from "@/components/ui/icons";
+import { CatalogSearch } from "@/components/catalog/catalog-search";
+import { ChevronDown, Sliders } from "@/components/ui/icons";
 
 export const metadata: Metadata = {
   title: "Productos",
@@ -64,18 +65,7 @@ export default function CatalogPage() {
           <div className="grid grid-cols-1 items-start gap-8 min-[1000px]:grid-cols-[272px_1fr]">
             <FiltersSidebar />
 
-            <div>
-              <form action="/productos" className="relative mb-5">
-                <Search className="pointer-events-none absolute left-4 top-1/2 h-[19px] w-[19px] -translate-y-1/2 text-muted" />
-                <input
-                  type="search"
-                  name="q"
-                  placeholder="Buscá por modelo de TV o código…"
-                  aria-label="Buscar repuestos"
-                  className="h-[50px] w-full rounded-xl border border-line-strong bg-white pl-[46px] pr-[18px] text-[15px] text-ink outline-none focus:border-primary"
-                />
-              </form>
-
+            <CatalogSearch>
               <div className="grid grid-cols-1 gap-4 min-[600px]:grid-cols-2 min-[900px]:grid-cols-3 min-[900px]:gap-5">
                 {ALL_PRODUCTS.map((product, i) => (
                   <Reveal key={product.slug} delay={Math.min(i, 11) * 0.04} className="h-full">
@@ -83,7 +73,7 @@ export default function CatalogPage() {
                   </Reveal>
                 ))}
               </div>
-            </div>
+            </CatalogSearch>
           </div>
         </div>
     </main>
