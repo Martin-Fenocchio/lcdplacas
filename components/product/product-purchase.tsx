@@ -55,7 +55,7 @@ export function ProductPurchase({ product }: { product: ProductDetail }) {
           className="mt-4 flex h-14 items-center justify-center gap-2.5 rounded-xl bg-whatsapp font-display text-base font-semibold text-whatsapp-ink shadow-[0_8px_24px_rgba(37,211,102,0.28)]"
         >
           <Whatsapp className="h-[22px] w-[22px]" />
-          Consultar / Comprar por WhatsApp
+          Consultar<span className="hidden min-[560px]:inline">&nbsp;/ Comprar</span> por WhatsApp
         </motion.a>
         <motion.button
           type="button"

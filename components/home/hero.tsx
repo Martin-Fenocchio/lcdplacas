@@ -42,7 +42,7 @@ const HERO_TINT = {
     "radial-gradient(680px 340px at 78% 6%, rgba(37,99,235,0.10), transparent 70%), radial-gradient(560px 320px at 96% 40%, rgba(6,182,212,0.10), transparent 70%)",
 } as const;
 
-const POPULAR = ["Placa main LG", "Fuente Noblex", "Tira de LED Hisense"];
+const POPULAR = ["Placa main Hisense", "Fuente Noblex", "T-Con Sansei", "Tira de LED Noblex"];
 
 export function Hero() {
   return (

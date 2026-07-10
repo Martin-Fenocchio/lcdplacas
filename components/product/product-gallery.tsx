@@ -7,8 +7,10 @@ import { cn } from "@/lib/cn";
 import { conditionBadgeClass, type ProductDetail } from "@/lib/products";
 import { fadeUp, scaleIn, stagger } from "@/lib/motion";
 import { ImagePlaceholder } from "@/components/ui/image-placeholder";
+import { ProductLightbox } from "@/components/product/product-lightbox";
+import { ZoomIn } from "@/components/ui/icons";
 
-/** How far the main image magnifies on hover. */
+/** How far the main image magnifies on hover (desktop). */
 const ZOOM = 2.2;
 
 export function ProductGallery({ product }: { product: ProductDetail }) {
@@ -16,11 +18,12 @@ export function ProductGallery({ product }: { product: ProductDetail }) {
   const [active, setActive] = useState(0);
   const [zooming, setZooming] = useState(false);
   const [origin, setOrigin] = useState("50% 50%");
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const current = Math.min(active, Math.max(images.length - 1, 0));
   const hasImages = images.length > 0;
 
   // Track the cursor over the frame and pin the zoom origin to it, so the
-  // image pans under the pointer like a magnifier.
+  // image pans under the pointer like a magnifier (desktop hover only).
   function handleMove(e: React.MouseEvent<HTMLDivElement>) {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
@@ -35,8 +38,9 @@ export function ProductGallery({ product }: { product: ProductDetail }) {
         onMouseEnter={() => hasImages && setZooming(true)}
         onMouseLeave={() => setZooming(false)}
         onMouseMove={handleMove}
+        onClick={() => hasImages && setLightboxIndex(current)}
         className={cn(
-          "relative aspect-square overflow-hidden rounded-[20px] border border-line bg-white",
+          "group relative aspect-square overflow-hidden rounded-[20px] border border-line bg-white",
           hasImages && "cursor-zoom-in",
         )}
       >
@@ -57,6 +61,7 @@ export function ProductGallery({ product }: { product: ProductDetail }) {
         ) : (
           <ImagePlaceholder stripe="gallery" glyph="board" className="h-full" glyphClassName="w-[60px] h-[60px]" />
         )}
+
         <span
           className={cn(
             "pointer-events-none absolute left-3.5 top-3.5 rounded-full px-3 py-[5px] text-xs font-semibold",
@@ -65,6 +70,16 @@ export function ProductGallery({ product }: { product: ProductDetail }) {
         >
           {product.condition}
         </span>
+
+        {/* Tap-to-zoom affordance for touch (desktop uses hover). */}
+        {hasImages && (
+          <span
+            aria-hidden="true"
+            className="absolute bottom-3 right-3 flex h-9 w-9 items-center justify-center rounded-full border border-line bg-white/90 text-ink shadow-sm backdrop-blur-sm min-[900px]:hidden"
+          >
+            <ZoomIn className="h-[18px] w-[18px]" />
+          </span>
+        )}
       </motion.div>
 
       {images.length > 1 && (
@@ -86,6 +101,15 @@ export function ProductGallery({ product }: { product: ProductDetail }) {
             </motion.button>
           ))}
         </motion.div>
+      )}
+
+      {lightboxIndex !== null && (
+        <ProductLightbox
+          images={images}
+          title={product.title}
+          initialIndex={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+        />
       )}
     </motion.div>
   );

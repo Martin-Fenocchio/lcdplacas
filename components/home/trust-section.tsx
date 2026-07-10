@@ -26,13 +26,13 @@ export function TrustSection() {
             Antes de salir del taller, testeamos cada repuesto para asegurar que funcione. Sin sorpresas, con garantía.
           </p>
 
-          <div className="mt-6 grid grid-cols-2 gap-3.5">
+          <div className="mt-6 grid grid-cols-1 gap-3.5 min-[560px]:grid-cols-2">
             {QUALITY_CHECKS.map((check, i) => (
               <div
                 key={check}
                 className={cn(
                   "flex items-center gap-3 rounded-xl border border-line bg-white px-4 py-3.5",
-                  i === QUALITY_CHECKS.length - 1 && "col-span-2",
+                  i === QUALITY_CHECKS.length - 1 && "min-[560px]:col-span-2",
                 )}
               >
                 <span className="inline-flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-full bg-success-soft text-success">

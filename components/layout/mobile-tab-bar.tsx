@@ -23,7 +23,7 @@ export function MobileTabBar() {
 
   const focusSearch = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-    window.setTimeout(() => document.getElementById("mobile-search")?.focus(), 320);
+    window.dispatchEvent(new CustomEvent("lcd:open-search"));
   };
 
   return (

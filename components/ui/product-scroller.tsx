@@ -10,7 +10,7 @@ import { ProductCard } from "@/components/ui/product-card";
  * Pure CSS — no JS.
  */
 const CONTAINER =
-  "no-scrollbar -mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-2 " +
+  "no-scrollbar -mx-6 flex snap-x snap-mandatory scroll-pl-6 gap-4 overflow-x-auto px-6 pb-2 " +
   "min-[900px]:mx-0 min-[900px]:grid min-[900px]:grid-cols-4 min-[900px]:gap-5 min-[900px]:overflow-visible min-[900px]:px-0 min-[900px]:pb-0";
 
 const ITEM =

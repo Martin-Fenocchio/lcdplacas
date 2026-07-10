@@ -33,7 +33,7 @@ export default function CatalogPage() {
                 <strong className="text-ink">{ALL_PRODUCTS.length}</strong> repuestos probados y garantizados
               </p>
             </div>
-            <div className="flex flex-wrap items-center justify-end gap-2.5">
+            <div className="flex w-full items-center justify-between gap-2.5 min-[1000px]:w-auto min-[1000px]:justify-end">
               <button
                 type="button"
                 className="inline-flex h-[42px] items-center gap-[7px] rounded-[10px] border border-line bg-white px-4 text-sm font-semibold text-body min-[1000px]:hidden"
@@ -42,7 +42,7 @@ export default function CatalogPage() {
                 Filtrar
               </button>
               <div className="flex items-center gap-2">
-                <span className="whitespace-nowrap text-[13px] text-muted">Ordenar:</span>
+                <span className="hidden whitespace-nowrap text-[13px] text-muted min-[400px]:inline">Ordenar:</span>
                 <div className="relative">
                   <select
                     aria-label="Ordenar productos"
@@ -76,7 +76,7 @@ export default function CatalogPage() {
                 />
               </form>
 
-              <div className="grid grid-cols-3 gap-4 max-[899px]:grid-cols-2 min-[900px]:gap-5">
+              <div className="grid grid-cols-1 gap-4 min-[600px]:grid-cols-2 min-[900px]:grid-cols-3 min-[900px]:gap-5">
                 {ALL_PRODUCTS.map((product, i) => (
                   <Reveal key={product.slug} delay={Math.min(i, 11) * 0.04} className="h-full">
                     <ProductCard product={product} priority={i < 3} />

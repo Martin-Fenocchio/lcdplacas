@@ -36,7 +36,7 @@ export function PdpMobileBar({
         className="flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-whatsapp font-display text-[15px] font-semibold text-whatsapp-ink"
       >
         <Whatsapp className="h-5 w-5" />
-        Consultar por WhatsApp
+        Consultar
       </a>
     </div>
   );
