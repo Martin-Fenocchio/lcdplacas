@@ -13,6 +13,7 @@ import {
 } from "@/lib/search";
 import { ProductCard } from "@/components/ui/product-card";
 import { FilterPanel } from "@/components/catalog/filter-panel";
+import { ProductCardSkeleton } from "@/components/catalog/product-card-skeleton";
 import { ChevronDown, Search, Sliders, X } from "@/components/ui/icons";
 
 const GRID = "grid grid-cols-1 gap-4 min-[600px]:grid-cols-2 min-[900px]:grid-cols-3 min-[900px]:gap-5";
@@ -43,6 +44,7 @@ export function CatalogBrowser({
   const [priceMin, setPriceMin] = useState("");
   const [priceMax, setPriceMax] = useState("");
   const [result, setResult] = useState<CatalogResult | null>(null);
+  const [loading, setLoading] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const reqId = useRef(0);
 
@@ -61,6 +63,7 @@ export function CatalogBrowser({
 
   useEffect(() => {
     const id = ++reqId.current;
+    setLoading(true);
     const timer = setTimeout(async () => {
       const r = await searchCatalog({
         query,
@@ -72,7 +75,10 @@ export function CatalogBrowser({
         priceMax: priceMax ? Number(priceMax) : null,
         categorySlug: category?.slug ?? null,
       });
-      if (id === reqId.current) setResult(r);
+      if (id === reqId.current) {
+        setResult(r);
+        setLoading(false);
+      }
     }, 180);
     return () => clearTimeout(timer);
   }, [query, sort, brand, type, condition, priceMin, priceMax, category?.slug]);
@@ -99,6 +105,10 @@ export function CatalogBrowser({
   };
 
   const facets = result?.facets ?? { brand: {}, type: {}, condition: {} };
+
+  // "busy" = we have nothing meaningful to show yet, so render skeletons instead
+  // of an empty screen or a premature "0 resultados".
+  const busy = active && (!result || (loading && result.hits.length === 0));
 
   const panelProps = {
     facets,
@@ -138,8 +148,14 @@ export function CatalogBrowser({
 
       {/* Count + controls */}
       <div className="mb-4 flex flex-col gap-3 min-[560px]:flex-row min-[560px]:items-center min-[560px]:justify-between">
-        <p className="text-sm text-muted">
-          {active ? (
+        <p className="text-sm text-muted" aria-live="polite">
+          {!active ? (
+            <>
+              <strong className="text-ink">{total}</strong> repuestos probados y garantizados
+            </>
+          ) : busy ? (
+            "Buscando…"
+          ) : (
             <>
               <strong className="text-ink">{result?.nbHits ?? 0}</strong> resultado
               {result?.nbHits === 1 ? "" : "s"}
@@ -149,10 +165,6 @@ export function CatalogBrowser({
                   para <strong className="text-ink">“{query.trim()}”</strong>
                 </>
               )}
-            </>
-          ) : (
-            <>
-              <strong className="text-ink">{total}</strong> repuestos probados y garantizados
             </>
           )}
         </p>
@@ -240,9 +252,19 @@ export function CatalogBrowser({
         <div>
           {!active ? (
             children
-          ) : result === null ? (
-            <p className="py-12 text-center text-[15px] text-muted">Buscando…</p>
-          ) : result.hits.length === 0 ? (
+          ) : busy ? (
+            <div className={cn(GRID, "fade-in")} aria-busy="true">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <ProductCardSkeleton key={i} />
+              ))}
+            </div>
+          ) : result && result.hits.length > 0 ? (
+            <div className={cn(GRID, "fade-in transition-opacity duration-200", loading && "opacity-60")}>
+              {result.hits.map((product) => (
+                <ProductCard key={product.slug} product={product} />
+              ))}
+            </div>
+          ) : (
             <div className="py-12 text-center">
               <p className="text-[15px] text-ink">No encontramos repuestos con esos criterios.</p>
               <p className="mt-1.5 text-sm text-muted">Probá con otro modelo, código, o quitá algún filtro.</p>
@@ -255,12 +277,6 @@ export function CatalogBrowser({
                   Limpiar filtros
                 </button>
               )}
-            </div>
-          ) : (
-            <div className={GRID}>
-              {result.hits.map((product) => (
-                <ProductCard key={product.slug} product={product} />
-              ))}
             </div>
           )}
         </div>

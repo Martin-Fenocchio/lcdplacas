@@ -21,9 +21,12 @@ real-world assets). **Section 2** = things Claude can build or is proposing.
 ## 👤 Section 1 — For Martín (only you can do these)
 
 ### PostHog
-- [ ] Create the PostHog project.
-- [ ] Send Claude the **Project API key** (`phc_…`) + **region** (US / EU) so it can be enabled + verified.
-- [ ] Add to Vercel env vars: `NEXT_PUBLIC_POSTHOG_KEY`, `NEXT_PUBLIC_POSTHOG_HOST`.
+- [x] Create the PostHog project.
+- [x] Send Claude the **Project API key** + **region** — enabled & verified locally
+      (cookieless, pageviews landing in PostHog, no cookies set).
+- [ ] Add to Vercel env vars so analytics works on the live site:
+      `NEXT_PUBLIC_POSTHOG_KEY` = `phc_ABb6zvqK3r86AxynFo8VgPEf9CXYSnHQuZdXeLroYSuB`,
+      `NEXT_PUBLIC_POSTHOG_HOST` = `https://us.i.posthog.com`.
 
 ### Deploy (Vercel)
 - [ ] Finish deploying the repo to Vercel.
@@ -54,7 +57,7 @@ real-world assets). **Section 2** = things Claude can build or is proposing.
 ## 🤖 Section 2 — For Claude (build / propose)
 
 ### Ready to build — just say the word
-- [ ] **Enable + verify PostHog** (as soon as the key arrives).
+- [x] **Enable + verify PostHog** — cookieless, pageviews + autocapture confirmed.
 - [ ] **Cart → WhatsApp** — add several parts (main + fuente + tiras) and send
       them as one prefilled WhatsApp message. The secondary buy flow you wanted.
 - [ ] **Wire the dead links to WhatsApp** — "Contacto" / "Cómo comprar" in the

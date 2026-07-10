@@ -87,8 +87,13 @@
   70%  { box-shadow: 0 0 0 14px rgba(37, 211, 102, 0); }
   100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
 }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
 
 .reveal { animation: riseIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.fade-in { animation: fadeIn 0.25s ease-out both; }
 
 /* Decorative step watermark: rendered via ::before so it's a purely
    presentational number (exempt from text-contrast checks). */
@@ -102,6 +107,6 @@
 .animate-pulse-ring { animation: pulseRing 2.4s ease-out infinite; }
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal { animation: none !important; }
+  .reveal, .fade-in { animation: none !important; }
   .animate-float-glow, .animate-pulse-ring { animation: none !important; }
 }
