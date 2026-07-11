@@ -46,6 +46,11 @@
 /* ------------------------------------------------------------------ *
  * Base
  * ------------------------------------------------------------------ */
+
+html {
+  overscroll-behavior-y: none;
+}
+
 @layer base {
   body {
     background: #ffffff;
@@ -53,7 +58,10 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     font-family: var(--font-display);
     color: var(--color-ink);
     letter-spacing: -0.02em;
@@ -75,38 +83,80 @@
  * The Reveal component toggles data-reveal; honors reduced motion.
  * ------------------------------------------------------------------ */
 @keyframes riseIn {
-  from { opacity: 0; transform: translateY(18px); }
-  to   { opacity: 1; transform: none; }
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 @keyframes floatGlow {
-  0%, 100% { transform: translate(0, 0); }
-  50%      { transform: translate(20px, -16px); }
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(20px, -16px);
+  }
 }
 @keyframes pulseRing {
-  0%   { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.45); }
-  70%  { box-shadow: 0 0 0 14px rgba(37, 211, 102, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.45);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(37, 211, 102, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+  }
 }
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-.reveal { animation: riseIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
-.fade-in { animation: fadeIn 0.25s ease-out both; }
+.reveal {
+  animation: riseIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.fade-in {
+  animation: fadeIn 0.25s ease-out both;
+}
 
 /* Decorative step watermark: rendered via ::before so it's a purely
    presentational number (exempt from text-contrast checks). */
-.step-number::before { content: attr(data-step); }
+.step-number::before {
+  content: attr(data-step);
+}
 
 /* Hide scrollbars on horizontal scrollers (mobile carousels). */
-.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
 
-.animate-float-glow { animation: floatGlow 9s ease-in-out infinite; }
-.animate-pulse-ring { animation: pulseRing 2.4s ease-out infinite; }
+.animate-float-glow {
+  animation: floatGlow 9s ease-in-out infinite;
+}
+.animate-pulse-ring {
+  animation: pulseRing 2.4s ease-out infinite;
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal, .fade-in { animation: none !important; }
-  .animate-float-glow, .animate-pulse-ring { animation: none !important; }
+  .reveal,
+  .fade-in {
+    animation: none !important;
+  }
+  .animate-float-glow,
+  .animate-pulse-ring {
+    animation: none !important;
+  }
 }
