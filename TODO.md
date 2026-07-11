@@ -76,9 +76,10 @@ real-world assets). **Section 2** = things Claude can build or is proposing.
       Fire in production once the Vercel PostHog key is set.
 
 ### Proposals — worth considering
-- [ ] **Rich WhatsApp link previews** — per-product Open Graph images (image +
-      price + code) so pasting a product link in WhatsApp shows a nice card.
-      High value since sharing happens on WhatsApp.
+- [x] **Rich WhatsApp link previews** — dynamic per-product Open Graph images
+      (photo + brand + title + code + price + LcdPlacas card) + a branded default
+      card. NOTE: previews resolve to the canonical domain, so they light up once
+      **www.lcdplacas.com** is connected (see Deploy above).
 - [ ] **Brand landing pages** (e.g. `/marcas/hisense`) for SEO on
       "repuestos hisense" type searches.
 - [ ] **Hi-res image integration** (after you get the photos) — host them on
