@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { cn } from "@/lib/cn";
 import { NAV_ITEMS } from "@/lib/site";
+import { SearchAutocomplete } from "@/components/search/search-autocomplete";
 import { Cart, ChevronDown, Search, TvLogo, X } from "@/components/ui/icons";
 
 const LOGO_GRADIENT = { backgroundImage: "linear-gradient(135deg,#2563EB,#06B6D4)" };
@@ -42,16 +43,7 @@ export function SiteHeader() {
           </span>
         </Link>
 
-        <form action="/productos" className="relative mx-auto hidden max-w-[560px] flex-1 min-[900px]:block">
-          <Search className="pointer-events-none absolute left-3.5 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-muted" />
-          <input
-            type="search"
-            name="q"
-            placeholder="Buscá por modelo de TV o código…"
-            aria-label="Buscar repuestos"
-            className="h-11 w-full rounded-[10px] border border-line bg-surface pl-[42px] pr-4 text-sm text-body outline-none focus:border-primary"
-          />
-        </form>
+        <SearchAutocomplete className="mx-auto hidden max-w-[560px] flex-1 min-[900px]:block" />
 
         <nav className="hidden shrink-0 items-center gap-[22px] text-sm font-medium min-[900px]:flex">
           {NAV_ITEMS.map((item) => (
@@ -105,20 +97,9 @@ export function SiteHeader() {
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
             className="overflow-hidden min-[900px]:hidden"
           >
-            <form action="/productos" className="mx-auto max-w-[1280px] px-6 pb-3">
-              <div className="relative">
-                <Search className="pointer-events-none absolute left-[14px] top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-muted" />
-                <input
-                  id="mobile-search"
-                  autoFocus
-                  type="search"
-                  name="q"
-                  placeholder="Buscá por modelo de TV o código…"
-                  aria-label="Buscar repuestos"
-                  className="h-11 w-full rounded-[10px] border border-line bg-surface pl-[42px] pr-4 text-sm text-body outline-none focus:border-primary"
-                />
-              </div>
-            </form>
+            <div className="mx-auto max-w-[1280px] px-6 pb-3">
+              <SearchAutocomplete autoFocus onNavigate={() => setSearchOpen(false)} />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

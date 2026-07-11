@@ -47,6 +47,22 @@ function hitToProduct(hit: SearchHit): Product {
   };
 }
 
+/** Lightweight top-N search for the header autocomplete dropdown. */
+export async function suggestProducts(query: string, hitsPerPage = 6): Promise<Product[]> {
+  try {
+    const res = await fetch(`https://${APP_ID}-dsn.algolia.net/1/indexes/${INDEX}/query`, {
+      method: "POST",
+      headers: HEADERS,
+      body: JSON.stringify({ query, hitsPerPage }),
+    });
+    if (!res.ok) return [];
+    const data: { hits?: SearchHit[] } = await res.json();
+    return (data.hits ?? []).map(hitToProduct);
+  } catch {
+    return [];
+  }
+}
+
 export type SortOption = "relevance" | "price_asc" | "price_desc";
 
 /** The facets users can filter by, in display order. */

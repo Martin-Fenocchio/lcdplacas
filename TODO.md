@@ -69,7 +69,8 @@ real-world assets). **Section 2** = things Claude can build or is proposing.
 - [x] **Search synonyms + Spanish handling** — 14 synonym groups (fuente↔power,
       tira↔tiras↔leds, placa main↔monoplaca↔placa madre, …) + plural/stop-word
       handling. Live on the index (no redeploy needed).
-- [ ] **Search autocomplete** — a suggestions dropdown in the header search.
+- [x] **Search autocomplete** — instant suggestions dropdown in the header search
+      (desktop + mobile), keyboard nav, deep-links to products or full results.
 - [x] **Custom analytics events** — product_viewed, product_clicked,
       consulta_whatsapp (with source), search (query + results), filter_applied.
       Fire in production once the Vercel PostHog key is set.
