@@ -1,8 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion, type Variants } from "motion/react";
-import { ImagePlaceholder } from "@/components/ui/image-placeholder";
+import heroPlaca from "@/assets/hero-placa.jpg";
 import { Check, Search, ShieldCheck } from "@/components/ui/icons";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
@@ -111,14 +112,16 @@ export function Hero() {
         <motion.div variants={rightGroup} initial="hidden" animate="show">
           <motion.div
             variants={imageIn}
-            className="relative overflow-hidden rounded-3xl border border-line shadow-[0_30px_60px_-30px_rgba(15,23,42,0.35)]"
+            className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-line shadow-[0_30px_60px_-30px_rgba(15,23,42,0.35)]"
           >
-            <ImagePlaceholder
-              stripe="panel"
-              glyph="tv"
-              label="imagen_hero_placa.jpg"
-              className="aspect-[4/3]"
-              glyphClassName="w-[46px] h-[46px]"
+            <Image
+              src={heroPlaca}
+              alt="Placa de circuito de un TV LED en primer plano"
+              fill
+              priority
+              placeholder="blur"
+              sizes="(max-width: 900px) 100vw, 45vw"
+              className="object-cover"
             />
           </motion.div>
           <motion.div

@@ -1,19 +1,20 @@
+import Image from "next/image";
 import { cn } from "@/lib/cn";
 import { QUALITY_CHECKS } from "@/lib/products";
-import { ImagePlaceholder } from "@/components/ui/image-placeholder";
+import controlCalidad from "@/assets/control-calidad.jpg";
 import { CheckThick } from "@/components/ui/icons";
 
 export function TrustSection() {
   return (
     <section className="mx-auto max-w-[1280px] px-6 py-12 min-[900px]:py-[76px]">
       <div className="grid grid-cols-1 items-center gap-8 min-[900px]:grid-cols-[0.9fr_1.1fr] min-[900px]:gap-[52px]">
-        <div className="overflow-hidden rounded-[22px] border border-line shadow-[0_24px_50px_-28px_rgba(15,23,42,0.35)]">
-          <ImagePlaceholder
-            stripe="panel"
-            glyph="image"
-            label="foto_testeo_taller.jpg"
-            className="aspect-[5/4]"
-            glyphClassName="w-11 h-11"
+        <div className="relative aspect-[5/4] overflow-hidden rounded-[22px] border border-line shadow-[0_24px_50px_-28px_rgba(15,23,42,0.35)]">
+          <Image
+            src={controlCalidad}
+            alt="Placa de circuito de TV probada en el taller"
+            fill
+            sizes="(max-width: 900px) 100vw, 45vw"
+            className="object-cover"
           />
         </div>
 
