@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { ALL_PRODUCTS, getProductBySlug } from "@/lib/products";
 import { formatARS } from "@/lib/format";
 
-export const alt = "Repuesto para TV LED — LcdPlacas";
+export const alt = "Repuesto para TV LED — LCDPlacas";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -55,7 +55,7 @@ export default async function OpengraphImage({ params }: { params: Promise<{ slu
               }}
             />
             <div style={{ display: "flex", fontSize: 28, fontWeight: 700 }}>
-              <span style={{ color: "#0f172a" }}>Lcd</span>
+              <span style={{ color: "#0f172a" }}>LCD</span>
               <span style={{ color: "#2563eb" }}>Placas</span>
             </div>
           </div>

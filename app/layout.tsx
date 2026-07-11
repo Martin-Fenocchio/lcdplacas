@@ -10,6 +10,8 @@ import { WhatsappFab } from "@/components/layout/whatsapp-fab";
 import { MobileTabBar } from "@/components/layout/mobile-tab-bar";
 import { JsonLd } from "@/components/ui/json-ld";
 import { Analytics } from "@/app/providers";
+import { CartProvider } from "@/components/cart/cart-context";
+import { CartDrawer } from "@/components/cart/cart-drawer";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -26,8 +28,8 @@ const spaceGrotesk = Space_Grotesk({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: "LcdPlacas · Repuestos para TV LED probados y garantizados",
-    template: "%s · LcdPlacas",
+    default: "LCDPlacas · Repuestos para TV LED probados y garantizados",
+    template: "%s · LCDPlacas",
   },
   description: SITE.description,
   applicationName: SITE.name,
@@ -37,12 +39,12 @@ export const metadata: Metadata = {
     locale: "es_AR",
     url: SITE.url,
     siteName: SITE.name,
-    title: "LcdPlacas · Repuestos para TV LED",
+    title: "LCDPlacas · Repuestos para TV LED",
     description: SITE.description,
   },
   twitter: {
     card: "summary_large_image",
-    title: "LcdPlacas · Repuestos para TV LED",
+    title: "LCDPlacas · Repuestos para TV LED",
     description: SITE.description,
   },
   robots: {
@@ -62,17 +64,20 @@ export default function RootLayout({
   return (
     <html lang="es-AR" className={`${inter.variable} ${spaceGrotesk.variable}`}>
       <body className="min-h-screen overflow-x-hidden bg-white pb-16 font-sans text-body antialiased min-[900px]:pb-0">
-        <Analytics>
-          <AnnouncementBar />
-          <SiteHeader />
-          {children}
-          <SiteFooter />
-          <WhatsappFab />
-          <MobileTabBar />
-          <JsonLd data={organizationLd()} />
-          <JsonLd data={websiteLd()} />
-          <JsonLd data={localBusinessLd()} />
-        </Analytics>
+        <CartProvider>
+          <Analytics>
+            <AnnouncementBar />
+            <SiteHeader />
+            {children}
+            <SiteFooter />
+            <WhatsappFab />
+            <MobileTabBar />
+            <JsonLd data={organizationLd()} />
+            <JsonLd data={websiteLd()} />
+            <JsonLd data={localBusinessLd()} />
+          </Analytics>
+          <CartDrawer />
+        </CartProvider>
       </body>
     </html>
   );

@@ -1,11 +1,5 @@
 import Link from "next/link";
-import {
-  CATEGORIES,
-  HELP_LINKS,
-  LEGAL_LINKS,
-  PAYMENT_METHODS,
-  SITE,
-} from "@/lib/site";
+import { CATEGORIES, HELP_LINKS, PAYMENT_METHODS, SITE } from "@/lib/site";
 import { Mail, MapPin, Phone, TvLogo } from "@/components/ui/icons";
 
 const LOGO_GRADIENT = { backgroundImage: "linear-gradient(135deg,#2563EB,#06B6D4)" };
@@ -28,7 +22,7 @@ export function SiteFooter() {
               <TvLogo className="h-5 w-5 text-white" />
             </span>
             <span className="font-display text-[19px] font-bold text-white">
-              Lcd<span className="text-sky">Placas</span>
+              LCD<span className="text-sky">Placas</span>
             </span>
           </div>
           <p className="mt-4 max-w-[34ch] text-sm leading-relaxed">
@@ -64,11 +58,23 @@ export function SiteFooter() {
         <div>
           <ColumnTitle>Ayuda</ColumnTitle>
           <div className="mt-4 flex flex-col gap-2.5 text-sm">
-            {HELP_LINKS.map((link) => (
-              <Link key={link.label} href={link.href} className="text-faint hover:text-white">
-                {link.label}
-              </Link>
-            ))}
+            {HELP_LINKS.map((link) =>
+              link.external ? (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-faint hover:text-white"
+                >
+                  {link.label}
+                </a>
+              ) : (
+                <Link key={link.label} href={link.href} className="text-faint hover:text-white">
+                  {link.label}
+                </Link>
+              ),
+            )}
           </div>
         </div>
 
@@ -88,15 +94,8 @@ export function SiteFooter() {
       </div>
 
       <div className="border-t border-white/[0.08]">
-        <div className="mx-auto flex max-w-[1280px] flex-wrap items-center justify-between gap-4 px-6 py-[18px] text-[13px]">
-          <span>© 2026 LcdPlacas · TecnoAudio. Todos los derechos reservados.</span>
-          <div className="flex gap-[18px]">
-            {LEGAL_LINKS.map((link) => (
-              <Link key={link.label} href={link.href} className="text-faint hover:text-white">
-                {link.label}
-              </Link>
-            ))}
-          </div>
+        <div className="mx-auto max-w-[1280px] px-6 py-[18px] text-[13px]">
+          <span>© 2026 {SITE.legalName}. Todos los derechos reservados.</span>
         </div>
       </div>
     </footer>

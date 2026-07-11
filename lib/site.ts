@@ -4,8 +4,8 @@
  */
 
 export const SITE = {
-  name: "LcdPlacas",
-  legalName: "LcdPlacas · TecnoAudio",
+  name: "LCDPlacas",
+  legalName: "LCDPlacas · TecnoAudio",
   url: "https://www.lcdplacas.com",
   description:
     "Repuestos para TV LED, probados y garantizados. Placas main, fuentes, T-Con, tiras de LED y componentes. Encontrá la placa exacta para tu TV por marca, modelo o código de parte.",
@@ -24,13 +24,21 @@ export function waLink(message?: string): string {
   return message ? `${base}?text=${encodeURIComponent(message)}` : base;
 }
 
-export const NAV_ITEMS = [
+export interface NavItem {
+  label: string;
+  href: string;
+  key: string;
+  hasChevron?: boolean;
+  /** Renders as an external <a target="_blank"> (e.g. WhatsApp). */
+  external?: boolean;
+}
+
+export const NAV_ITEMS: NavItem[] = [
   { label: "Inicio", href: "/", key: "inicio" },
   { label: "Productos", href: "/productos", key: "productos" },
   { label: "Categorías", href: "/productos", key: "categorias", hasChevron: true },
-  { label: "Cómo comprar", href: "#", key: "como-comprar" },
-  { label: "Contacto", href: "#", key: "contacto" },
-] as const;
+  { label: "Contacto", href: waLink("Hola, tengo una consulta."), key: "contacto", external: true },
+];
 
 export type CategoryIcon =
   | "placas"
@@ -100,16 +108,12 @@ export const BRANDS = ["Hisense", "Noblex", "Sansei", "LG", "Philco", "Sanyo"] a
 
 export const PAYMENT_METHODS = ["Transferencia", "Efectivo", "Depósito", "Correo Argentino"] as const;
 
-export const HELP_LINKS = [
-  { label: "Cómo comprar", href: "#" },
-  { label: "Envíos", href: "#" },
-  { label: "Garantía", href: "#" },
-  { label: "Preguntas frecuentes", href: "#" },
-  { label: "Contacto", href: "#" },
-] as const;
+export interface FooterLink {
+  label: string;
+  href: string;
+  external?: boolean;
+}
 
-export const LEGAL_LINKS = [
-  { label: "Botón de arrepentimiento", href: "#" },
-  { label: "Términos y condiciones", href: "#" },
-  { label: "Privacidad", href: "#" },
-] as const;
+export const HELP_LINKS: FooterLink[] = [
+  { label: "Contacto", href: waLink("Hola, tengo una consulta."), external: true },
+];

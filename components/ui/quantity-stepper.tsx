@@ -2,16 +2,31 @@
 
 import { useState } from "react";
 
-/** Small quantity control for the product page. Visual/UX only for now. */
-export function QuantityStepper({ min = 1, max = 99 }: { min?: number; max?: number }) {
-  const [qty, setQty] = useState(min);
+interface QuantityStepperProps {
+  min?: number;
+  max?: number;
+  /** Controlled value; falls back to internal state when omitted. */
+  value?: number;
+  onChange?: (qty: number) => void;
+}
+
+/** Small quantity control. Works controlled (value + onChange) or standalone. */
+export function QuantityStepper({ min = 1, max = 99, value, onChange }: QuantityStepperProps) {
+  const [internal, setInternal] = useState(min);
+  const qty = value ?? internal;
+
+  const set = (n: number) => {
+    const clamped = Math.max(min, Math.min(max, n));
+    if (onChange) onChange(clamped);
+    else setInternal(clamped);
+  };
 
   return (
     <div className="inline-flex items-center overflow-hidden rounded-[10px] border border-line-strong bg-white">
       <button
         type="button"
         aria-label="Restar"
-        onClick={() => setQty((q) => Math.max(min, q - 1))}
+        onClick={() => set(qty - 1)}
         className="h-[46px] w-[42px] text-xl text-body transition-colors hover:bg-surface"
       >
         −
@@ -22,7 +37,7 @@ export function QuantityStepper({ min = 1, max = 99 }: { min?: number; max?: num
       <button
         type="button"
         aria-label="Sumar"
-        onClick={() => setQty((q) => Math.min(max, q + 1))}
+        onClick={() => set(qty + 1)}
         className="h-[46px] w-[42px] text-xl text-body transition-colors hover:bg-surface"
       >
         +

@@ -1,14 +1,18 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "motion/react";
 import { waLink } from "@/lib/site";
 import type { ProductDetail } from "@/lib/products";
 import { trackConsulta } from "@/lib/analytics";
 import { fadeUp, stagger } from "@/lib/motion";
+import { useCart } from "@/components/cart/cart-context";
 import { QuantityStepper } from "@/components/ui/quantity-stepper";
 import { Cart, Truck, Whatsapp } from "@/components/ui/icons";
 
 export function ProductPurchase({ product }: { product: ProductDetail }) {
+  const { addItem } = useCart();
+  const [qty, setQty] = useState(1);
   const priceFull = product.price.toLocaleString("es-AR", { minimumFractionDigits: 2 });
   const codeSuffix = product.code ? ` (Cód. ${product.code})` : "";
   const waMessage = `Hola, quiero consultar por: ${product.title}${codeSuffix} — https://www.lcdplacas.com/producto/${product.slug}`;
@@ -39,12 +43,11 @@ export function ProductPurchase({ product }: { product: ProductDetail }) {
       <motion.div variants={fadeUp} className="mt-[22px] rounded-2xl border border-line bg-surface p-5">
         <div className="font-display text-[34px] font-bold text-ink">${priceFull}</div>
         <div className="mt-1 text-sm text-muted">
-          Hasta <strong className="text-ink">12 cuotas</strong> ·{" "}
-          <a href="#" className="font-medium">Ver cuotas y descuentos</a>
+          Hasta <strong className="text-ink">12 cuotas</strong>
         </div>
 
         <div className="mt-[18px] flex items-center gap-3">
-          <QuantityStepper />
+          <QuantityStepper value={qty} onChange={setQty} />
           <span className="text-[13px] text-muted">Cantidad</span>
         </div>
 
@@ -57,10 +60,11 @@ export function ProductPurchase({ product }: { product: ProductDetail }) {
           className="mt-4 flex h-14 items-center justify-center gap-2.5 rounded-xl bg-whatsapp font-display text-base font-semibold text-whatsapp-ink shadow-[0_8px_24px_rgba(37,211,102,0.28)]"
         >
           <Whatsapp className="h-[22px] w-[22px]" />
-          Consultar<span className="hidden min-[560px]:inline">&nbsp;/ Comprar</span> por WhatsApp
+          Consultar<span className="hidden min-[560px]:inline">/Comprar</span> por WhatsApp
         </motion.a>
         <motion.button
           type="button"
+          onClick={() => addItem(product, qty)}
           whileTap={{ scale: 0.98 }}
           className="mt-2.5 flex h-[50px] w-full items-center justify-center gap-2.5 rounded-xl border border-primary bg-white font-display text-[15px] font-semibold text-primary transition-colors hover:bg-primary-soft"
         >
