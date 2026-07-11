@@ -15,6 +15,9 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "d22fxaf9t8d39k.cloudfront.net" },
     ],
+    // CDN filenames are content-hashed (a new image = a new URL), so the
+    // optimized variants are safe to cache for a long time.
+    minimumCacheTTL: 31536000, // 1 year
   },
 };
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { waLink } from "@/lib/site";
+import { trackConsulta } from "@/lib/analytics";
 import { Whatsapp } from "@/components/ui/icons";
 
 /**
@@ -33,6 +34,7 @@ export function PdpMobileBar({
         href={waLink(message)}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => trackConsulta({ slug, title, code: code || undefined, price }, "pdp_sticky")}
         className="flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-whatsapp font-display text-[15px] font-semibold text-whatsapp-ink"
       >
         <Whatsapp className="h-5 w-5" />

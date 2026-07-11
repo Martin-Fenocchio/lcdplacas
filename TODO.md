@@ -29,7 +29,10 @@ real-world assets). **Section 2** = things Claude can build or is proposing.
       `NEXT_PUBLIC_POSTHOG_HOST` = `https://us.i.posthog.com`.
 
 ### Deploy (Vercel)
-- [ ] Finish deploying the repo to Vercel.
+- [x] Deploy to Vercel — live at https://lcdplacas.vercel.app
+- [ ] Cache invalidation on product change (later): pages are static/edge-cached,
+      so "invalidate" = rebuild. Set up a Supabase webhook → Vercel Deploy Hook
+      so adding/editing a product auto-redeploys.
 - [ ] Env vars on Vercel: **only the 2 PostHog vars above are needed.**
       (Supabase isn't needed at runtime — the site reads a committed snapshot.
       Algolia works with built-in public keys.)
@@ -63,10 +66,13 @@ real-world assets). **Section 2** = things Claude can build or is proposing.
 - [ ] **Wire the dead links to WhatsApp** — "Contacto" / "Cómo comprar" in the
       nav & footer currently go to `#`. Point them at WhatsApp (no new pages),
       and tidy the footer. Small, makes the site feel finished.
-- [ ] **Search polish** — Algolia **synonyms** (tira↔tiras, fuente↔power, led↔leds)
-      + an **autocomplete dropdown** in the header search.
-- [ ] **Custom analytics events** — track "consulta por WhatsApp" per product and
-      search terms, so you get a clean funnel (richer than autocapture alone).
+- [x] **Search synonyms + Spanish handling** — 14 synonym groups (fuente↔power,
+      tira↔tiras↔leds, placa main↔monoplaca↔placa madre, …) + plural/stop-word
+      handling. Live on the index (no redeploy needed).
+- [ ] **Search autocomplete** — a suggestions dropdown in the header search.
+- [x] **Custom analytics events** — product_viewed, product_clicked,
+      consulta_whatsapp (with source), search (query + results), filter_applied.
+      Fire in production once the Vercel PostHog key is set.
 
 ### Proposals — worth considering
 - [ ] **Rich WhatsApp link previews** — per-product Open Graph images (image +

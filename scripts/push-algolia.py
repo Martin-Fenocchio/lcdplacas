@@ -89,10 +89,32 @@ def api(method, path, payload):
         return json.loads(r.read().decode())
 
 
+# Multi-way synonyms tuned for TV-repair-parts search in Spanish (Argentina).
+# Accents are normalised by Algolia, so "codigo" also covers "código".
+SYNONYMS = [
+    ["placa main", "main", "placa madre", "mother", "motherboard", "monoplaca", "placa principal"],
+    ["fuente", "fuente de poder", "power", "power supply", "placa de fuente", "fuente de alimentacion"],
+    ["t-con", "tcon", "t con", "placa t-con"],
+    ["tira de led", "tiras de led", "tira led", "tiras led", "kit de led", "kit de leds",
+     "leds", "backlight", "retroiluminacion", "barra de led", "barras de led"],
+    ["tv", "televisor", "tele", "television", "smart tv", "tv led", "led tv"],
+    ["placa", "board", "plaqueta", "pcb"],
+    ["codigo", "cod", "parte", "numero de parte", "part number"],
+    ["driver", "placa driver", "driver board"],
+    ["flex", "cable flex", "flexor"],
+    ["cinta", "cinta doble faz", "cinta adhesiva", "doble faz", "adhesivo"],
+    ["capacitor", "condensador"],
+    ["ken brown", "kenbrown"],
+    ["top house", "tophouse"],
+    ["sansei", "sanei"],
+]
+
+
 def main():
     products = json.load(open(os.path.join(ROOT, "data", "products.json")))
     records = [record(p) for p in products]
 
+    # Relevance + Spanish language handling (plurals, stop words like "para").
     api("PUT", f"{INDEX}/settings", {
         "searchableAttributes": [
             "title", "code", "compatibleModels", "brand", "type", "category",
@@ -101,7 +123,19 @@ def main():
             "searchable(brand)", "searchable(type)", "categorySlug", "condition",
         ],
         "customRanking": ["desc(price)"],
+        "queryLanguages": ["es"],
+        "indexLanguages": ["es"],
+        "ignorePlurals": True,
+        "removeStopWords": True,
     })
+
+    syn_objects = [
+        {"objectID": f"syn-{i}", "type": "synonym", "synonyms": group}
+        for i, group in enumerate(SYNONYMS)
+    ]
+    api("POST", f"{INDEX}/synonyms/batch?replaceExistingSynonyms=true", syn_objects)
+    print(f"set {len(syn_objects)} synonym groups + Spanish language settings")
+
     resp = api("POST", f"{INDEX}/batch",
                {"requests": [{"action": "addObject", "body": r} for r in records]})
     print(f"pushed {len(records)} records, taskID={resp.get('taskID')}")

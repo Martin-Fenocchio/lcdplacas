@@ -11,6 +11,7 @@ import { ProductAttributes } from "@/components/product/product-attributes";
 import { ProductDescription } from "@/components/product/product-description";
 import { RelatedProducts } from "@/components/product/related-products";
 import { PdpMobileBar } from "@/components/product/pdp-mobile-bar";
+import { ProductViewTracker } from "@/components/analytics/product-view-tracker";
 
 export function generateStaticParams() {
   return ALL_PRODUCTS.map((product) => ({ slug: product.slug }));
@@ -70,6 +71,7 @@ export default async function ProductPage({
         <RelatedProducts product={product} />
 
         <PdpMobileBar title={product.title} code={product.code} price={product.price} slug={product.slug} />
+        <ProductViewTracker product={product} />
 
         <JsonLd data={productLd(product)} />
         <JsonLd

@@ -1,8 +1,11 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/cn";
 import { conditionBadgeClass, type Product } from "@/lib/products";
 import { formatARS } from "@/lib/format";
+import { trackProductClick } from "@/lib/analytics";
 import { ImagePlaceholder } from "@/components/ui/image-placeholder";
 import { Cart, Whatsapp } from "@/components/ui/icons";
 
@@ -20,6 +23,7 @@ export function ProductCard({ product, variant = "default", priority = false }: 
   return (
     <Link
       href={`/producto/${product.slug}`}
+      onClick={() => trackProductClick(product)}
       className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white transition-[translate,box-shadow,border-color] duration-300 ease-out hover:-translate-y-1 hover:border-primary-softer hover:shadow-[0_18px_36px_-22px_rgba(15,23,42,0.4)]"
     >
       <div className="relative aspect-square overflow-hidden bg-white">

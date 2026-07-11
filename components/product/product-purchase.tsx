@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import { waLink } from "@/lib/site";
 import type { ProductDetail } from "@/lib/products";
+import { trackConsulta } from "@/lib/analytics";
 import { fadeUp, stagger } from "@/lib/motion";
 import { QuantityStepper } from "@/components/ui/quantity-stepper";
 import { Cart, Truck, Whatsapp } from "@/components/ui/icons";
@@ -51,6 +52,7 @@ export function ProductPurchase({ product }: { product: ProductDetail }) {
           href={waLink(waMessage)}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => trackConsulta(product, "pdp")}
           whileTap={{ scale: 0.98 }}
           className="mt-4 flex h-14 items-center justify-center gap-2.5 rounded-xl bg-whatsapp font-display text-base font-semibold text-whatsapp-ink shadow-[0_8px_24px_rgba(37,211,102,0.28)]"
         >

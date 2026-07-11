@@ -5,10 +5,8 @@ import { usePathname, useSearchParams } from "next/navigation";
 import posthog from "posthog-js";
 import { PostHogProvider } from "posthog-js/react";
 
+// PostHog is initialised in `instrumentation-client.ts` (before hydration).
 const KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;
-const HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "https://us.i.posthog.com";
-
-let initialized = false;
 
 /** Manual pageview capture — the App Router is an SPA, so route changes don't
  *  trigger a full load. Wrapped in Suspense because it reads searchParams. */
@@ -27,26 +25,8 @@ function PageViewTracker() {
   return null;
 }
 
-/**
- * PostHog analytics, cookieless. `persistence: "memory"` keeps everything in
- * memory — no cookies, no localStorage — so no consent banner is required.
- * No-ops when the key isn't configured, so the site builds/deploys either way.
- */
+/** No-ops when the key isn't configured, so the site builds/deploys either way. */
 export function Analytics({ children }: { children: React.ReactNode }) {
-  useEffect(() => {
-    if (!KEY || initialized) return;
-    posthog.init(KEY, {
-      api_host: HOST,
-      persistence: "memory",
-      person_profiles: "identified_only",
-      capture_pageview: false,
-      capture_pageleave: true,
-      autocapture: true,
-      disable_session_recording: true,
-    });
-    initialized = true;
-  }, []);
-
   if (!KEY) return <>{children}</>;
 
   return (

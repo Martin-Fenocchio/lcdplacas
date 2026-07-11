@@ -11,6 +11,7 @@ import {
   type FacetAttr,
   type SortOption,
 } from "@/lib/search";
+import { trackFilter, trackSearch } from "@/lib/analytics";
 import { ProductCard } from "@/components/ui/product-card";
 import { FilterPanel } from "@/components/catalog/filter-panel";
 import { ProductCardSkeleton } from "@/components/catalog/product-card-skeleton";
@@ -47,6 +48,7 @@ export function CatalogBrowser({
   const [loading, setLoading] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const reqId = useRef(0);
+  const lastSearched = useRef("");
 
   const selected: Record<FacetAttr, string[]> = { brand, type, condition };
   const setters: Record<FacetAttr, (v: string[]) => void> = { brand: setBrand, type: setType, condition: setCondition };
@@ -78,6 +80,11 @@ export function CatalogBrowser({
       if (id === reqId.current) {
         setResult(r);
         setLoading(false);
+        const q = query.trim();
+        if (q && q !== lastSearched.current) {
+          lastSearched.current = q;
+          trackSearch(q, r.nbHits);
+        }
       }
     }, 180);
     return () => clearTimeout(timer);
@@ -94,7 +101,9 @@ export function CatalogBrowser({
 
   const toggle = (attr: FacetAttr, value: string) => {
     const list = selected[attr];
-    setters[attr](list.includes(value) ? list.filter((v) => v !== value) : [...list, value]);
+    const adding = !list.includes(value);
+    setters[attr](adding ? [...list, value] : list.filter((v) => v !== value));
+    if (adding) trackFilter(attr, value);
   };
   const clearFilters = () => {
     setBrand([]);
