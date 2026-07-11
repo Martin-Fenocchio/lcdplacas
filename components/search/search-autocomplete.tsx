@@ -29,6 +29,7 @@ export function SearchAutocomplete({
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [hits, setHits] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(-1);
   const [box, setBox] = useState<{ top: number; left: number; width: number } | null>(null);
@@ -42,13 +43,16 @@ export function SearchAutocomplete({
   useEffect(() => {
     if (term.length < 2) {
       setHits([]);
+      setLoading(false);
       return;
     }
     const id = ++reqId.current;
+    setLoading(true);
     const t = setTimeout(async () => {
       const results = await suggestProducts(term, 6);
       if (id === reqId.current) {
         setHits(results);
+        setLoading(false);
         setActive(-1);
       }
     }, 150);
@@ -150,7 +154,19 @@ export function SearchAutocomplete({
             style={{ position: "fixed", top: box.top, left: box.left, width: box.width, zIndex: 60 }}
             className="overflow-hidden rounded-xl border border-line bg-white shadow-[0_18px_40px_-16px_rgba(15,23,42,0.35)]"
           >
-            {hits.length === 0 ? (
+            {loading && hits.length === 0 ? (
+              <ul className="animate-pulse">
+                {[0, 1, 2].map((i) => (
+                  <li key={i} className="flex items-center gap-3 px-3 py-2.5">
+                    <span className="h-11 w-11 shrink-0 rounded-md bg-line" />
+                    <span className="min-w-0 flex-1">
+                      <span className="block h-3 w-3/4 rounded bg-line" />
+                      <span className="mt-1.5 block h-2.5 w-1/3 rounded bg-line" />
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            ) : hits.length === 0 ? (
               <p className="px-4 py-4 text-sm text-muted">Sin sugerencias para “{term}”.</p>
             ) : (
               <ul>
