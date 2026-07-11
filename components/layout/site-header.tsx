@@ -7,8 +7,9 @@ import { AnimatePresence, motion } from "motion/react";
 import { cn } from "@/lib/cn";
 import { NAV_ITEMS } from "@/lib/site";
 import { useCart } from "@/components/cart/cart-context";
+import { CategoriesMenu } from "@/components/layout/categories-menu";
 import { SearchAutocomplete } from "@/components/search/search-autocomplete";
-import { Cart, ChevronDown, Search, TvLogo, X } from "@/components/ui/icons";
+import { Cart, Search, TvLogo, X } from "@/components/ui/icons";
 
 const LOGO_GRADIENT = { backgroundImage: "linear-gradient(135deg,#2563EB,#06B6D4)" };
 
@@ -49,6 +50,8 @@ export function SiteHeader() {
 
         <nav className="hidden shrink-0 items-center gap-[22px] text-sm font-medium min-[900px]:flex">
           {NAV_ITEMS.map((item) => {
+            if (item.hasChevron) return <CategoriesMenu key={item.key} />;
+
             const className = cn(
               "inline-flex items-center gap-1 transition-colors",
               active === item.key ? "font-semibold text-primary" : "text-body hover:text-ink",
@@ -60,7 +63,6 @@ export function SiteHeader() {
             ) : (
               <Link key={item.key} href={item.href} className={className}>
                 {item.label}
-                {item.hasChevron && <ChevronDown className="h-[15px] w-[15px]" />}
               </Link>
             );
           })}
