@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { cn } from "@/lib/cn";
 import { QUALITY_CHECKS } from "@/lib/products";
-import controlCalidad from "@/assets/control-calidad.jpg";
+import controlCalidad from "@/assets/hero-placa.jpg";
 import { CheckThick } from "@/components/ui/icons";
 
 export function TrustSection() {

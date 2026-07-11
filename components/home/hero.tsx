@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion, type Variants } from "motion/react";
-import heroPlaca from "@/assets/hero-placa.jpg";
+import heroPlaca from "@/assets/control-calidad.jpg";
 import { Check, Search, ShieldCheck } from "@/components/ui/icons";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
